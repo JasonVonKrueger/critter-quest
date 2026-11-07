@@ -1,40 +1,55 @@
 import Phaser from 'phaser';
+import { createPlaceholderBunny } from './placeholderBunny';
+const texture='bunny-v1';
+export type BunnyPose='idle'|'blink'|'happy'|'eat';
+export function preloadBunny(scene:Phaser.Scene){
+  scene.load.atlas('bunny-sad-v1','/assets/characters/bunny/bunny-sad-v1.png','/assets/characters/bunny/bunny-sad-v1.json');
+  scene.load.atlas(texture,'/assets/characters/bunny/bunny-v1.png','/assets/characters/bunny/bunny-v1.json');
+}
+class SpriteBunny extends Phaser.GameObjects.Container {
+  private hungry=false;
+  private sprite:Phaser.GameObjects.Image;
+  private blinkTimer?:Phaser.Time.TimerEvent;
+  private poseTimer?:Phaser.Time.TimerEvent;
+  constructor(scene:Phaser.Scene,x:number,y:number){
+    super(scene,x,y);scene.add.existing(this);
+    this.sprite=scene.add.image(0,-10,texture,'idle').setDisplaySize(260,260);
+    this.add(this.sprite);this.setSize(180,230);
+    this.scheduleBlink(Phaser.Math.Between(1200,2600));
+    this.once(Phaser.GameObjects.Events.DESTROY,()=>{this.blinkTimer?.remove(false);this.poseTimer?.remove(false);});
+  }
+  private showFrame(pose:BunnyPose){
+    const sad=this.hungry&&(pose==='idle'||pose==='blink')&&this.scene.textures.exists('bunny-sad-v1');
+    this.sprite.setTexture(sad?'bunny-sad-v1':texture,pose).setDisplaySize(260,260);
+  }
+  setHungry(hungry:boolean){
+    if(this.hungry===hungry)return;
+    this.hungry=hungry;
+    this.blinkTimer?.remove(false);this.poseTimer?.remove(false);
+    this.showFrame('idle');this.scheduleBlink(1800);
+  }
+  private scheduleBlink(delay:number){
+    this.blinkTimer=this.scene.time.delayedCall(delay,()=>{
+      this.showFrame('blink');
+      this.poseTimer=this.scene.time.delayedCall(150,()=>{
+        this.showFrame('idle');
+        this.scheduleBlink(Phaser.Math.Between(0,4)===0?240:Phaser.Math.Between(2400,5200));
+      });
+    });
+  }
+  pose(pose:BunnyPose,duration=900){
+    this.blinkTimer?.remove(false);this.poseTimer?.remove(false);
+    this.showFrame(pose);
+    this.poseTimer=this.scene.time.delayedCall(duration,()=>{this.showFrame('idle');this.scheduleBlink(1800);});
+  }
+}
+export function createBunny(scene:Phaser.Scene,x:number,y:number){
+  return scene.textures.exists(texture)?new SpriteBunny(scene,x,y):createPlaceholderBunny(scene,x,y);
+}
+export function setBunnyPose(bunny:Phaser.GameObjects.GameObject,pose:BunnyPose,duration=900){
+  if(bunny instanceof SpriteBunny)bunny.pose(pose,duration);
+}
 
-/** Full-body placeholder, grouped so all poses and tap reactions move together. */
-export function createBunny(scene: Phaser.Scene, x: number, y: number) {
-  const bunny = scene.add.container(x, y);
-  const art = scene.add.graphics();
-  const ellipse = (cx: number, cy: number, width: number, height: number, color: number) => {
-    art.fillStyle(color); art.fillEllipse(cx, cy, width, height);
-  };
-  // Tail, plump body, belly, and oversized back paws.
-  ellipse(48, 44, 35, 35, 0xe7dce9);
-  ellipse(0, 37, 92, 101, 0xfff5ee);
-  ellipse(0, 49, 59, 66, 0xffffff);
-  ellipse(-29, 79, 43, 29, 0xfff5ee);
-  ellipse(29, 79, 43, 29, 0xfff5ee);
-  ellipse(-29, 82, 24, 13, 0xf5b5bf);
-  ellipse(29, 82, 24, 13, 0xf5b5bf);
-  // Ears and a round, expressive face.
-  ellipse(-27, -66, 31, 87, 0xfff5ee);
-  ellipse(27, -70, 31, 91, 0xfff5ee);
-  ellipse(-27, -66, 16, 62, 0xf3aab8);
-  ellipse(27, -70, 16, 66, 0xf3aab8);
-  ellipse(0, -13, 111, 90, 0xfff5ee);
-  ellipse(-22, -16, 24, 30, 0x563835);
-  ellipse(22, -16, 24, 30, 0x563835);
-  ellipse(-19, -22, 9, 11, 0xffffff);
-  ellipse(25, -22, 9, 11, 0xffffff);
-  ellipse(-36, 7, 22, 12, 0xf8c0c5);
-  ellipse(36, 7, 22, 12, 0xf8c0c5);
-  ellipse(0, 3, 13, 9, 0xe98f9e);
-  art.lineStyle(2, 0x986b67);
-  art.beginPath(); art.moveTo(0, 7); art.lineTo(0, 13); art.lineTo(-7, 17);
-  art.moveTo(0, 13); art.lineTo(7, 17); art.strokePath();
-  // Front paws sit over the belly.
-  ellipse(-32, 37, 26, 40, 0xf4e3e1);
-  ellipse(32, 37, 26, 40, 0xf4e3e1);
-  bunny.add(art);
-  bunny.setSize(145, 230);
-  return bunny;
+export function setBunnyHungry(bunny:Phaser.GameObjects.GameObject,hungry:boolean){
+  if(bunny instanceof SpriteBunny)bunny.setHungry(hungry);
 }

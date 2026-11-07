@@ -14,6 +14,8 @@ export class RoomManager {
       for(const room of this.rooms.values()){
         // Upgrade saves made before replay and independent sanctuary progress.
         room.sanctuary ??= {stars:room.mission.stars,unlockedAnimals:[...room.mission.unlockedAnimals]};
+        Reflect.deleteProperty(room.mission,'water');Reflect.deleteProperty(room.mission,'waterVersion');
+        room.mission.patches=room.mission.patches.map(stage=>stage===0?1:stage);
         room.mission.round ??= 1;room.replayReady=[];
         for(const player of room.players){player.connected=false;if(room.phase!=='started')player.ready=false;}
       }
@@ -106,7 +108,7 @@ export class RoomManager {
   replay(token:string,round:number,ready:boolean):ActionResult {
     return this.transaction(()=>{
       const {room,player}=this.locate(token);
-      if(!room||!player?.connected||room.phase!=='started'||!room.mission.complete)return {ok:false,error:'Finish this adventure together first.'};
+      if(!room||!player?.connected||room.phase!=='started')return {ok:false,error:'Join your adventure first.'};
       if(round!==room.mission.round||typeof ready!=='boolean')return {ok:false,error:'That request belongs to a different round.'};
       room.replayReady=room.replayReady.filter(id=>id!==player.id);
       if(ready)room.replayReady.push(player.id);

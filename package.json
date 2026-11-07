@@ -24,5 +24,8 @@
     "typescript": "^5.9.0",
     "typescript-eslint": "^8.46.0"
   },
-  "type": "module"
+  "type": "module",
+  "allowScripts": {
+    "better-sqlite3@13.0.3": true
+  }
 }

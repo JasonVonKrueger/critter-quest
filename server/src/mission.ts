@@ -1,7 +1,7 @@
 import type { ActionResult, MissionAction, MissionState, Role } from '@critter-quest/shared';
 export const bunnyGarden = { carrotsRequired: 3, growthStages: 3, rewardStars: 3 };
 export function createMission(round=1): MissionState {
-  return { round, patches: [0,0,0], basket: [], fed: [], discovered: false, complete: false, stars: 0, unlockedAnimals: [] };
+  return { round, patches: [1,1,1], basket: [], fed: [], discovered: false, complete: false, stars: 0, unlockedAnimals: [] };
 }
 // Expected stages and stable carrot IDs make repeated or delayed packets harmless.
 export function applyMissionAction(state: MissionState, role: Role, action: MissionAction): ActionResult {

@@ -1,5 +1,5 @@
 import { resolve } from 'node:path';
-import { JsonGameStore } from './store.js';
+import { SqliteGameStore } from './store.js';
 import express from 'express';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
@@ -8,7 +8,11 @@ import { RoomManager } from './rooms.js';
 const app = express();
 const http = createServer(app);
 const io = new Server<ClientEvents, ServerEvents>(http, { cors: { origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173' } });
-const rooms = new RoomManager(new JsonGameStore(resolve(process.env.DATA_FILE || 'data/games.json')));
+const store = new SqliteGameStore(
+  resolve(process.env.DATABASE_FILE || 'data/games.sqlite'),
+  resolve(process.env.LEGACY_DATA_FILE || process.env.DATA_FILE || 'data/games.json'),
+);
+const rooms = new RoomManager(store);
 const owners = new Map<string, string>();
 app.get('/api/health', (_req, res) => res.json({ ok: true, game: 'Critter Quest' }));
 io.on('connection', socket => {
@@ -54,7 +58,7 @@ io.on('connection', socket => {
   socket.on('hug:send', reply => {
     if (typeof reply !== 'function') return;
     const result = token ? rooms.hug(token) : {ok:false as const,error:'Join a garden first.'};
-    if (result.ok && token) { const room=rooms.state(token); if(room) io.to(room.code).emit('hug:received'); }
+    if (result.ok && token) { const room=rooms.state(token); if(room) socket.to(room.code).emit('hug:received'); }
     reply(result);
   });
   socket.on('disconnect', () => {
@@ -67,3 +71,10 @@ io.on('connection', socket => {
 });
 const port = Number(process.env.PORT || 3001);
 http.listen(port, '0.0.0.0', () => console.log(`Critter Quest server: http://localhost:${port}`));
+
+let stopping=false;
+function shutdown(){
+  if(stopping)return;stopping=true;
+  io.close(()=>{store.close();process.exit(0);});
+}
+process.on('SIGINT',shutdown);process.on('SIGTERM',shutdown);

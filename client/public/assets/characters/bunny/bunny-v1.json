@@ -1,0 +1,92 @@
+{
+  "frames": {
+    "idle": {
+      "frame": {
+        "x": 130,
+        "y": 18,
+        "w": 386,
+        "h": 581
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 120,
+        "y": 19,
+        "w": 386,
+        "h": 581
+      },
+      "sourceSize": {
+        "w": 627,
+        "h": 627
+      }
+    },
+    "blink": {
+      "frame": {
+        "x": 725,
+        "y": 20,
+        "w": 386,
+        "h": 581
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 120,
+        "y": 19,
+        "w": 386,
+        "h": 581
+      },
+      "sourceSize": {
+        "w": 627,
+        "h": 627
+      }
+    },
+    "happy": {
+      "frame": {
+        "x": 131,
+        "y": 636,
+        "w": 385,
+        "h": 592
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 121,
+        "y": 8,
+        "w": 385,
+        "h": 592
+      },
+      "sourceSize": {
+        "w": 627,
+        "h": 627
+      }
+    },
+    "eat": {
+      "frame": {
+        "x": 726,
+        "y": 642,
+        "w": 390,
+        "h": 585
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 118,
+        "y": 15,
+        "w": 390,
+        "h": 585
+      },
+      "sourceSize": {
+        "w": 627,
+        "h": 627
+      }
+    }
+  },
+  "meta": {
+    "image": "bunny-v1.png",
+    "size": {
+      "w": 1254,
+      "h": 1254
+    },
+    "scale": "1"
+  }
+}

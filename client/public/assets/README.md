@@ -1,3 +1,5 @@
 # Artwork
 
-The supplied concept sheet is a visual reference, not a sprite atlas. No extracted or production assets are installed yet. The landing preview uses temporary emoji and simple Phaser shapes. Replace these with individual licensed PNG/WebP sprites, preserving transparency and proportions. Asset folders are reserved for backgrounds, characters, objects, UI, effects, and audio.
+The supplied concept sheet is a visual reference. The first generated game asset is `characters/bunny/bunny-v1.png`, with a Phaser atlas and production prompt documented alongside it. The generated transparent sheet is used for idle, blink, happy, and eating poses.
+
+Illustrated meadow and garden backgrounds are installed in `backgrounds/`, with generation prompts documented there. Pip, tappable garden objects, and most effects still use temporary shapes/emoji. Replace them incrementally with individual transparent PNG/WebP assets and full environment art. Do not use an entire concept sheet as a background. Keep character scale and lighting consistent across new assets.

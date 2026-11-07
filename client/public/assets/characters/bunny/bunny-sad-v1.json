@@ -1,0 +1,52 @@
+{
+  "frames": {
+    "idle": {
+      "frame": {
+        "x": 159,
+        "y": 35,
+        "w": 582,
+        "h": 839
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 172,
+        "y": 47,
+        "w": 582,
+        "h": 839
+      },
+      "sourceSize": {
+        "w": 926,
+        "h": 926
+      }
+    },
+    "blink": {
+      "frame": {
+        "x": 1046,
+        "y": 35,
+        "w": 583,
+        "h": 839
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 172,
+        "y": 47,
+        "w": 583,
+        "h": 839
+      },
+      "sourceSize": {
+        "w": 926,
+        "h": 926
+      }
+    }
+  },
+  "meta": {
+    "image": "bunny-sad-v1.png",
+    "size": {
+      "w": 1774,
+      "h": 887
+    },
+    "scale": "1"
+  }
+}

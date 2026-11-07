@@ -13,7 +13,7 @@ npm run dev
 
 Open http://localhost:5173. Create a garden in one tab, then open the invitation link in a **second tab** and join with the code. Each tab keeps its own reconnect token in sessionStorage. Reloading a connected tab resumes its existing player. Some browsers copy sessionStorage into duplicated tabs: use a fresh tab rather than Duplicate Tab to test the second player.
 
-Each child selects Raelyn or Cooper, chooses Explorer or Helper, and taps “I’m ready!” Names and roles are exclusive within a room, and either child can play either role. The server starts the adventure team only when both players are connected and ready. Once both players are ready, each enters their role’s mission screen. Rooms reserve both slots even after disconnect; create a new room for a fresh session. State is saved to a server-side JSON file and restored after restarts. Sessions have no expiration or cleanup yet; this is a local development foundation, not a public production service.
+Each child selects Raelyn or Cooper, chooses Explorer or Helper, and taps “I’m ready!” Names and roles are exclusive within a room, and either child can play either role. The server starts the adventure team only when both players are connected and ready. Once both players are ready, each enters their role’s mission screen. Rooms reserve both slots even after disconnect; create a new room for a fresh session. State is saved to a server-side SQLite database and restored after restarts. Sessions have no expiration or cleanup yet; this is a local development foundation, not a public production service.
 
 For two phones on your local Wi-Fi, visit your computer’s LAN IP at port 5173. Vite proxies Socket.IO to port 3001, so no client URL override is necessary. Clipboard sharing requires a secure context on most phones; the visible room code also works. Allow local firewall access if required.
 
@@ -44,7 +44,7 @@ npm run build
 1. Lobby identity, role selection, readiness, and reconnection are complete.
 2. Carrot growth, transfers, feeding, and server-owned mission completion are complete.
 3. Replace placeholder artwork; add reusable Phaser animations, audio, Pip narration, and hugs.
-4. Shared sanctuary and JSON persistence behind a storage interface are complete.
+4. Shared sanctuary and SQLite persistence behind a storage interface are complete.
 
 No child information, public discovery, chat, purchases, or analytics are included.
 
@@ -61,9 +61,9 @@ Existing rooms and player seats survive backend restarts. Connected players reco
 ## Phase 3: play Bunny’s Garden
 
 1. Create/join a room and choose one Explorer and one Helper. Both tap ready.
-2. Explorer: tap the bunny or “Say hello” to discover its hunger.
-3. Helper: tap each patch three times (plant → water → send). Use the large buttons or the patches in the Phaser scene.
-4. Explorer: each sent carrot appears in the basket. Tap the basket button or bunny to feed one carrot at a time.
+2. Explorer: tap the bunny to discover its hunger.
+3. Helper: plant each patch, drag the watering can over it, then tap again to send. Use the large buttons or the patches in the Phaser scene.
+4. Explorer: each sent carrot appears in the basket. Tap a landed carrot to feed it to the bunny.
 5. After three feedings, both screens celebrate and show three stars and the bunny unlock.
 6. Reload either player midway through: patch stages, basket inventory, and feeding progress return.
 
@@ -80,7 +80,7 @@ To test on a phone on the same Wi-Fi, run `npm run dev` and open the Network URL
 - Tap ✨ Pip to hear the current instruction again. Instructions also update as mission progress changes; visible text remains when speech is unavailable.
 - The speaker button mutes both narration and effects. The preference is saved on this browser.
 - Mobile browsers require interaction before sound can play: tap Pip or a game control to enable audio. Speech voices depend on the device; no recorded voice assets are included yet.
-- Tap “Send a hug” to float hearts on both players’ screens, including after mission completion. Each player has a server-enforced three-second cooldown, preserved across reconnects. Hugs are transient and are not replayed after reconnect.
+- Tap “Send a hug” to float hearts on the other player’s screen, including after mission completion. The sender sees “Hug on its way!” without the receiving animation. Each player has a server-enforced three-second cooldown, preserved across reconnects. Hugs are transient and are not replayed after reconnect.
 - Phaser canvases resize to their containers; grass extends across the entire scene while the central play area stays in view.
 
 Verified with nine logic tests, TypeScript, ESLint, the production build, and a live two-client hug broadcast/cooldown check. Browser visual inspection was unavailable; confirm grass width, audio permission behavior, and touch layout on both target phones.
@@ -91,11 +91,11 @@ Tap **Sanctuary** during or after the mission. Before rescue, the habitat is wai
 
 The shared garden is the MVP game profile. Room state, roles, mission inventory, rewards, and opaque reconnect tokens are persisted together. The landing screen lists up to six recently used player seats stored in this browser. Use the correct named seat when returning. Choosing a seat that is already open elsewhere transfers that connection. A fresh tab still allows a second player to join normally; saved seats are never resumed automatically from localStorage.
 
-- Default save file: `server/data/games.json` when launched via the npm scripts. This directory is ignored by Git.
-- Override with server environment variable `DATA_FILE`; use an absolute path on hosted deployments and a persistent disk.
-- Saves use temporary-file replacement. Failed writes roll back the action and report an error. Invalid JSON or an unsupported file version stops startup rather than discarding the save.
-- Back up the save file to preserve gardens. Keep it private: it contains bearer reconnect tokens. No birthdays, contact details, accounts, or other child information are requested.
-- This JSON store supports one backend process. Multiple server instances will require a database-backed implementation of `GameStore`.
+- Default save file: `server/data/games.sqlite` when launched via the npm scripts. This directory is ignored by Git.
+- Override with server environment variable `DATABASE_FILE`; use an absolute path on hosted deployments and a persistent disk.
+- Saves use a better-sqlite3 transaction for room and session changes, with WAL journaling and full synchronous durability. Failed writes roll back the action and report an error. Unsupported database versions stop startup rather than discarding progress.
+- Stop the server before copying the SQLite file for backup, or use SQLite’s online backup tooling; do not copy only the main file while WAL writes may be pending. Keep it private: it contains bearer reconnect tokens. No birthdays, contact details, accounts, or other child information are requested.
+- The server still supports one backend process: RoomManager owns in-memory state, and the SQLite store commits full snapshots. Multiple server processes need coordinated state ownership before sharing a database.
 - Rooms and seats do not expire yet. There is no cross-device account recovery. A new device can use an unoccupied seat via the room code; recovering an occupied saved seat requires its existing browser storage.
 
 Acceptance check: complete a mission, open Sanctuary on both phones, restart the server, and reload both pages. The same bunny and stars should return. Close a tab, open the landing page again, and choose its saved player. Clearing browser storage removes that browser’s saved-seat access, but does not delete the server’s progress.
@@ -130,3 +130,41 @@ For deployment, serve `client/dist` over HTTPS and reverse-proxy `/socket.io` (i
 Phone acceptance checks: install from Android and iOS, open from the home-screen icon, verify safe areas and audio, reconnect both saved players, reopen offline after a successful online visit, then reconnect. Deploy a new build and confirm updates wait for an explicit choice. Actual device installation still needs a target-phone check.
 
 Icon source is `client/public/icons/bunny.svg`. To regenerate PNG placeholders, run `python3 scripts/generate-icons.py` with Pillow installed.
+
+## SQLite persistence
+
+The server uses `better-sqlite3` through `SqliteGameStore`, retaining the existing `GameStore` interface. Rooms are stored as JSON documents in a `rooms` table; reconnect tokens and player references live in `sessions`, with a room foreign key. All snapshot changes commit in a single transaction. `PRAGMA user_version` tracks schema version.
+
+On first use of an empty database, the server imports `server/data/games.json` if it exists. The original JSON is left untouched, and subsequent starts use SQLite. Override the import path with `LEGACY_DATA_FILE`; the old `DATA_FILE` variable is also accepted as an import path. Choose a database location with `DATABASE_FILE`. Invalid imports stop startup and leave the database uninitialized so the import can be retried after correction. Existing room/save-schema migrations still apply.
+
+`better-sqlite3` includes a native addon. Dependency installation must allow its install script. The repository’s npm `allowScripts` entry approves the installed version; upgrades may require approving the new version. Run `npm test` to verify imports, SQLite reopen/recovery, transaction rollback, and gameplay persistence.
+
+## Bunny artwork v1
+
+The first polished art asset is installed: a transparent four-pose bunny sprite sheet in `client/public/assets/characters/bunny/`. The Phaser atlas aligns each pose’s feet and centers the bunny consistently. It supports idle blinking, a happy reaction to taps/hugs, an eating pose on feeding, and a happy celebration after the final carrot. The meadow preview and sanctuary share the same art.
+
+The PNG is preserved unchanged from built-in image generation; the atlas handles frame extraction and alignment at runtime. Full generation prompt and asset notes are in `client/public/assets/characters/bunny/README.md`. Backgrounds, Pip, carrots, and effects remain the next art passes. The older vector bunny remains only as a fallback if loading the new asset fails. The PWA precaches both the PNG and atlas JSON for offline shell rendering.
+
+Carrot arrivals now land beside the bunny, where available carrots remain visible. Tap a landed carrot to feed it; only that action triggers the eating pose. The separate basket button has been removed.
+
+## Environment artwork v1
+
+Illustrated meadow and garden backgrounds replace the decorative tree/house/butterfly emoji and flat scenery. The meadow includes a cozy tree house, flowers, fence, and forest; the garden includes a watering can, barrel, and sunflowers. Both fill the viewport using cover scaling while characters and tap targets remain separate. Art and exact generation prompts are in `client/public/assets/backgrounds/`. PWA precaching includes both images. Pip, carrot growth sprites, and effects remain future artwork passes.
+
+## Start over mid-adventure
+
+**Start over** is available during an unfinished adventure and in Sanctuary. One player requests a reset; the other sees the request and taps the same button to agree. Either can cancel their own request before the reset. Both must be connected. This clears the current round’s patches, carrots, feedings, and bunny greeting, while retaining names, roles, and previously earned sanctuary rewards. Completed rounds keep the **Play again together** label.
+
+## Drag to water
+
+Drag the blue watering can beside the barrel over a planted patch to tilt and pour. It always has water; the barrel is decorative. Invalid drops return it home without changing the patch. Tapping a planted patch now reminds the child to drag the can. Planting and collecting remain taps. The can is an independent transparent sprite, and `garden-v2.png` removes the old painted-in can so there is no duplicate left behind during dragging.
+
+The experimental bunny ear mesh has been removed because of reported flicker. The normal sprite renderer handles blinking and pose changes again; independent floppy ears are deferred until a properly layered character rig is available.
+
+Dragging a filled can over a planted patch now starts watering immediately: the can tilts and a short stream flows from its spout onto that patch before it returns home. Releasing is not required to start pouring.
+
+Patches now begin as sprouts, including after Start over. There is no planting tap. Drag the watering can over a sprout; it becomes a ready carrot only after the tilt-and-pour sequence finishes. Tap the ready carrot to send it. Existing untouched patches migrate to sprouts on server startup.
+
+## Return to the main page
+
+Tap the top-left **Critter Quest** logo from the adventure, sanctuary, or lobby. This closes that player's current connection and clears only the tab's automatic resume token. The garden and named player seat remain saved: choose the player under **Welcome back** to return. The other player's screen shows the disconnect; Home does not reset the mission or delete rewards.

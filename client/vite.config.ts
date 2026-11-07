@@ -23,7 +23,8 @@ export default defineConfig({
       ],
     },
     workbox: {
-      globPatterns: ['**/*.{js,css,html,png,svg,webmanifest}'],
+      maximumFileSizeToCacheInBytes: 8 * 1024 * 1024,
+      globPatterns: ['**/*.{js,css,html,png,svg,json,webmanifest}'],
       navigateFallbackDenylist: [/^\/api(?:\/|$)/, /^\/socket\.io(?:\/|$)/],
       cleanupOutdatedCaches: true,
       // Cache only the build shell; multiplayer and all API traffic stay live.

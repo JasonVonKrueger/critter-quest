@@ -12,7 +12,7 @@ test('invalid roles and payloads leave mission unchanged',()=>{
 });
 test('duplicate growth, collection, and feeding cannot duplicate items or rewards',()=>{
  const state=createMission();
- for(let patch=0;patch<3;patch++)for(let stage=0;stage<3;stage++){
+ for(let patch=0;patch<3;patch++)for(let stage=1;stage<3;stage++){
    const action={round:1,id:`${patch}-${stage}`,type:'grow' as const,patch,stage};
    assert.ok(applyMissionAction(state,'helper',action).ok);
    assert.equal(applyMissionAction(state,'helper',action).ok,false);
@@ -33,8 +33,19 @@ test('room gates mission actions and reconnect restores progress',()=>{
  assert.equal(manager.act(a.token,{round:1,id:'a',type:'discover'}).ok,false);
  const b=manager.join(a.room.code);assert.ok(b.ok);
  manager.select(a.token,'Raelyn','explorer');manager.select(b.token,'Cooper','helper');manager.ready(a.token,true);manager.ready(b.token,true);
- assert.ok(manager.act(b.token,{round:1,id:'g',type:'grow',patch:0,stage:0}).ok);
+ assert.equal(manager.state(b.token)?.mission.patches[0],1);
  manager.disconnect(b.token);assert.equal(manager.act(b.token,{round:1,id:'g2',type:'grow',patch:0,stage:1}).ok,false);
  const resumed=manager.resume(b.token);assert.ok(resumed.ok);assert.equal(resumed.room.mission.patches[0],1);
  assert.ok(manager.act(b.token,{round:1,id:'g2',type:'grow',patch:0,stage:1}).ok);
+});
+test('the watering can waters every planted patch without refills',()=>{
+ const state=createMission();
+ for(let patch=0;patch<3;patch++){
+  assert.equal(state.patches[patch],1);
+  const water={round:1,id:`water-${patch}`,type:'grow' as const,patch,stage:1};
+  assert.equal(applyMissionAction(state,'explorer',water).ok,false);
+  assert.ok(applyMissionAction(state,'helper',water).ok);
+  assert.equal(applyMissionAction(state,'helper',water).ok,false);
+ }
+ assert.deepEqual(state.patches,[2,2,2]);
 });

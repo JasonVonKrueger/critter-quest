@@ -1,0 +1,11 @@
+# Bunny sprite sheet v1
+
+`bunny-v1.png` is a generated RGBA sprite sheet with four poses. `bunny-v1.json` is the Phaser atlas: `idle`, `blink`, `happy`, `eat`. Atlas metadata centers each character and aligns feet to a common baseline without modifying the original generated PNG.
+
+Runtime rendering uses a common 627 × 627 logical frame. Blink timers and pose changes are managed by `client/src/bunny.ts`; the vector bunny is retained as a load-failure fallback in `placeholderBunny.ts`. Preview, meadow, and sanctuary load the same atlas. Feeding uses the eating pose, hugs use the happy pose, and mission completion transitions from eating to a happy celebration.
+
+Generated with the built-in imagegen tool. The concept sheet in the conversation supplied the visual direction; it was not used as an in-game background or sprite atlas. Original PNG copied unchanged into this project. This is a first art pass, with pose switching plus Phaser motion tweens rather than a fully drawn frame-by-frame animation sequence.
+
+## Generation prompt
+
+Use case: stylized-concept. Production game asset: a transparent PNG sprite sheet for Critter Quest, matching the initial concept sheet in this conversation: adorable full-body white baby bunny, enormous glossy warm brown eyes, pink inner ears and pink cheeks, cream-white fluffy fur, little powder-blue neck tuft, rounded paws and cotton tail. High-quality softly shaded children's mobile game cartoon, rich dimensional highlights, friendly proportions. Output EXACTLY a 2 by 2 grid of four equal square cells, ideally 1024x1024 total, no text or borders. Top-left: seated idle bunny eyes OPEN. Top-right: same exact seated bunny eyes CLOSED for blinking, same silhouette, size, feet baseline, head position. Bottom-left: happy bunny with smiling closed eyes and raised little paws, full body. Bottom-right: eating bunny holding a small carrot, seated full body. Each bunny centered in its own cell with generous transparent padding (at least 12% cell width), feet at same vertical baseline around 88% cell height. Maintain identical character design, scale, ear length and lighting between all cells. Truly transparent background, no checkerboard painted into image, no ground, no scenery, no typography, no cropping. This is actual runtime sprite art, clean separated cells with no overlap.
