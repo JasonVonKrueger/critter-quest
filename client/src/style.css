@@ -30,3 +30,5 @@ body.playing{overflow:hidden;overscroll-behavior:none}
 .home-button{min-width:44px;min-height:44px;border:0;border-radius:12px;background:#e8dfef;color:#76568c;font-size:14px;font-weight:700;white-space:nowrap;padding:8px 10px}.lobby-home{margin-bottom:12px}@media(max-width:420px){.play .brand>span{display:none}.play .home-button span{display:none}.play .brand{font-size:24px}.play header{gap:6px}}
 
 @media(max-width:420px){.play .brand>span{display:inline}.play .brand{font-size:20px}}
+
+.play-actions{grid-template-columns:1fr}

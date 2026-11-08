@@ -1,32 +1,34 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { applyMissionAction, createMission } from './mission.js';
+import { applyMissionAction, createMission, nextHungerAt } from './mission.js';
 import { RoomManager } from './rooms.js';
 test('invalid roles and payloads leave mission unchanged',()=>{
- const state=createMission();
+ const state=createMission();const before=structuredClone(state);
  assert.equal(applyMissionAction(state,'explorer',{round:1,id:'1',type:'grow',patch:0,stage:0}).ok,false);
  assert.equal(applyMissionAction(state,'helper',{round:1,id:'1',type:'feed',carrot:0}).ok,false);
  for(const patch of [-1,3,0.5,NaN])assert.equal(applyMissionAction(state,'helper',{round:1,id:'1',type:'grow',patch,stage:0}).ok,false);
  assert.equal(applyMissionAction(state,'helper',{round:1,id:'1',type:'grow',patch:0,stage:3}).ok,false);
- assert.deepEqual(state,createMission());
+ assert.deepEqual(state,before);
 });
-test('duplicate growth, collection, and feeding cannot duplicate items or rewards',()=>{
- const state=createMission();
- for(let patch=0;patch<3;patch++)for(let stage=1;stage<3;stage++){
-   const action={round:1,id:`${patch}-${stage}`,type:'grow' as const,patch,stage};
+test('levels advance through carrots and snake feeding without duplicate rewards',()=>{
+ const state=createMission();assert.deepEqual(state.patches,[1]);
+ for(let level=1;level<=4;level++){
+  const count=level===4?1:level;
+  const round=state.round,offset=level===4?6:level*(level-1)/2;
+  for(let patch=0;patch<count;patch++)for(let stage=1;stage<3;stage++){
+   const action={round,id:`${level}-${patch}-${stage}`,type:'grow' as const,patch,stage};
    assert.ok(applyMissionAction(state,'helper',action).ok);
    assert.equal(applyMissionAction(state,'helper',action).ok,false);
- }
- assert.deepEqual(state.basket,[0,1,2]);
- assert.equal(applyMissionAction(state,'explorer',{round:1,id:'f',type:'feed',carrot:0}).ok,false);
- applyMissionAction(state,'explorer',{round:1,id:'hello',type:'discover'});
- for(let carrot=0;carrot<3;carrot++){
-   const action={round:1,id:`feed-${carrot}`,type:'feed' as const,carrot};
+  }
+  for(let patch=0;patch<count;patch++){
+   const action={round,id:`feed-${level}-${patch}`,type:'feed' as const,carrot:offset+patch};
    assert.ok(applyMissionAction(state,'explorer',action).ok);
    assert.equal(applyMissionAction(state,'explorer',action).ok,false);
-   assert.equal(state.complete,carrot===2);
+  }
+  assert.equal(state.complete,level===4);
+  if(level<3){assert.equal(state.level,level+1);assert.equal(state.patches.length,level+1);assert.equal(state.stars,0);}
  }
- assert.equal(state.stars,3);assert.deepEqual(state.unlockedAnimals,['bunny']);assert.equal(state.basket.length,0);
+ assert.equal(state.fed.length,7);assert.equal(state.stars,6);assert.deepEqual(state.unlockedAnimals,['bunny','snake']);
 });
 test('room gates mission actions and reconnect restores progress',()=>{
  const manager=new RoomManager();const a=manager.create();assert.ok(a.ok);
@@ -39,7 +41,7 @@ test('room gates mission actions and reconnect restores progress',()=>{
  assert.ok(manager.act(b.token,{round:1,id:'g2',type:'grow',patch:0,stage:1}).ok);
 });
 test('the watering can waters every planted patch without refills',()=>{
- const state=createMission();
+ const state=createMission();state.level=3;state.patches=[1,1,1];
  for(let patch=0;patch<3;patch++){
   assert.equal(state.patches[patch],1);
   const water={round:1,id:`water-${patch}`,type:'grow' as const,patch,stage:1};
@@ -48,4 +50,25 @@ test('the watering can waters every planted patch without refills',()=>{
   assert.equal(applyMissionAction(state,'helper',water).ok,false);
  }
  assert.deepEqual(state.patches,[2,2,2]);
+});
+
+test('hunger deadlines are 10–20 seconds and reset after feeding',()=>{
+ assert.equal(nextHungerAt(1000,0),11000);
+ assert.equal(nextHungerAt(1000,0.999999),21000);
+ const state=createMission();state.hungryAt=1;state.discovered=true;state.level=3;state.patches=[1,1,1];state.fed=[0,1,2];state.basket=[3];
+ const before=Date.now();assert.ok(applyMissionAction(state,'explorer',{round:1,id:'meal',type:'feed',carrot:3}).ok);
+ assert.ok(state.hungryAt>=before+10000&&state.hungryAt<=Date.now()+20000);
+ state.basket=[4,5];
+ applyMissionAction(state,'explorer',{round:1,id:'meal2',type:'feed',carrot:4});
+ applyMissionAction(state,'explorer',{round:1,id:'meal3',type:'feed',carrot:5});
+ assert.equal(state.level,4);state.basket=[6];
+ applyMissionAction(state,'explorer',{round:state.round,id:'snake-meal',type:'feed',carrot:6});
+ assert.equal(state.complete,true);assert.equal(state.hungryAt,0);
+});
+
+test('the first carrot can be fed without greeting the bunny',()=>{
+ const state=createMission();state.basket=[0];
+ assert.equal(state.discovered,false);
+ assert.ok(applyMissionAction(state,'explorer',{round:1,id:'first-carrot',type:'feed',carrot:0}).ok);
+ assert.deepEqual(state.fed,[0]);assert.deepEqual(state.basket,[]);
 });

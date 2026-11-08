@@ -16,5 +16,5 @@ export interface ClientEvents {
   'room:resume': (token: string, reply: (result: RoomResult) => void) => void;
 }
 export interface ServerEvents { 'hug:received': () => void; 'room:state': (room: RoomState) => void }
-export interface MissionState { round:number; patches: number[]; basket: number[]; fed: number[]; discovered: boolean; complete: boolean; stars: number; unlockedAnimals: string[] }
+export interface MissionState { level:number; hungryAt:number; round:number; patches: number[]; basket: number[]; fed: number[]; discovered: boolean; complete: boolean; stars: number; unlockedAnimals: string[] }
 export type MissionAction = {round:number} & ({ id: string; type: 'discover' } | { id: string; type: 'grow'; patch: number; stage: number } | { id: string; type: 'feed'; carrot: number });

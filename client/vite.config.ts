@@ -24,6 +24,7 @@ export default defineConfig({
     },
     workbox: {
       maximumFileSizeToCacheInBytes: 8 * 1024 * 1024,
+      globIgnores: ['assets/backgrounds/meadow-v1.png', 'assets/backgrounds/garden-v1.png', 'assets/backgrounds/garden-v2.png'],
       globPatterns: ['**/*.{js,css,html,png,svg,json,webmanifest}'],
       navigateFallbackDenylist: [/^\/api(?:\/|$)/, /^\/socket\.io(?:\/|$)/],
       cleanupOutdatedCaches: true,

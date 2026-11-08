@@ -1,5 +1,5 @@
 import type { GameStore, SavedGame } from './store.js';
-import { createMission, applyMissionAction } from './mission.js';
+import { createMission, applyMissionAction, nextHungerAt } from './mission.js';
 import type { MissionAction } from '@critter-quest/shared';
 import { randomBytes, randomUUID } from 'node:crypto';
 import type { RoomState, RoomResult, PlayerName, Role, ActionResult } from '@critter-quest/shared';
@@ -16,6 +16,12 @@ export class RoomManager {
         room.sanctuary ??= {stars:room.mission.stars,unlockedAnimals:[...room.mission.unlockedAnimals]};
         Reflect.deleteProperty(room.mission,'water');Reflect.deleteProperty(room.mission,'waterVersion');
         room.mission.patches=room.mission.patches.map(stage=>stage===0?1:stage);
+        if(room.mission.level===undefined){
+          room.mission.level=3;
+          room.mission.basket=room.mission.basket.map(id=>id+3);
+          room.mission.fed=[0,1,2,...room.mission.fed.map(id=>id+3)];
+        }
+        room.mission.hungryAt ??= room.mission.complete?0:nextHungerAt();
         room.mission.round ??= 1;room.replayReady=[];
         for(const player of room.players){player.connected=false;if(room.phase!=='started')player.ready=false;}
       }
@@ -93,15 +99,21 @@ export class RoomManager {
     if (room.phase === 'started') return { ok: true };
     if (!player.name) return { ok: false, error: 'Choose your name and role first.' };
     player.ready = ready;
-    if (room.players.length === 2 && room.players.every(p => p.connected && p.ready && p.name) && room.players[0].role !== room.players[1].role) room.phase = 'started';
+    if (room.players.length === 2 && room.players.every(p => p.connected && p.ready && p.name) && room.players[0].role !== room.players[1].role) {room.phase = 'started';room.mission.hungryAt=nextHungerAt();}
     return { ok: true };
   }
   private actMission(token: string, action: MissionAction): ActionResult {
     const { room, player } = this.locate(token);
     if (!room || !player?.connected || room.phase !== 'started') return { ok: false, error: 'Join your adventure first.' };
+    const oldLevel=room.mission.level;
+    const oldRound=room.mission.round;
     const result=applyMissionAction(room.mission, player.role, action);
-    if(result.ok&&room.mission.complete&&!room.sanctuary.unlockedAnimals.includes('bunny')){
-      room.sanctuary.unlockedAnimals.push('bunny');room.sanctuary.stars+=room.mission.stars;
+    if(room.mission.round!==oldRound)room.replayReady=[];
+    if(result.ok&&oldLevel===3&&room.mission.level===4){
+      for(const member of room.players)member.role=member.role==='helper'?'explorer':'helper';
+    }
+    if(result.ok)for(const animal of room.mission.unlockedAnimals){
+      if(!room.sanctuary.unlockedAnimals.includes(animal)){room.sanctuary.unlockedAnimals.push(animal);room.sanctuary.stars+=3;}
     }
     return result;
   }
@@ -113,6 +125,7 @@ export class RoomManager {
       room.replayReady=room.replayReady.filter(id=>id!==player.id);
       if(ready)room.replayReady.push(player.id);
       if(room.players.length===2&&room.players.every(p=>p.connected&&room.replayReady.includes(p.id))){
+        if(room.mission.level===4)for(const member of room.players)member.role=member.role==='helper'?'explorer':'helper';
         room.mission=createMission(room.mission.round+1);room.replayReady=[];
       }
       return {ok:true};

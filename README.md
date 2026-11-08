@@ -174,3 +174,23 @@ Tap the top-left **Critter Quest** logo from the adventure, sanctuary, or lobby.
 From `/home/hosted-apps/critter-quest`, run `npm ci` and `npm run build`, then use `pm2 startOrReload ecosystem.config.cjs --only critter-quest --update-env` and `pm2 save`. The checked-in ecosystem config uses absolute paths relative to the checkout, one forked backend process, the production origin, and `server/data/games.sqlite`. Nginx still serves `client/dist` and proxies API/Socket.IO to port 3001.
 
 For 502 errors, first run `pm2 logs critter-quest --lines 80 --nostream` and `curl -i http://127.0.0.1:3001/api/health` on the server. If the local health request fails, fix the backend error shown in PM2 logs. If it succeeds while the public endpoint fails, inspect `sudo tail -n 50 /var/log/nginx/error.log` and the active Nginx configuration. Native SQLite dependencies must be installed on the server with the same Node version used by PM2. The service user must be able to write the database directory.
+
+The bunny now starts cheerful, then becomes gently sad after a random 10–20 seconds without eating. Each feeding resets the server-generated, saved deadline. Reconnecting preserves the deadline; finished missions keep the bunny happy. There is no visible countdown, penalty, or lost progress.
+
+## Animated clouds
+
+The meadow, garden, and landing preview now use cloud-free backgrounds with independent cloud sprites drifting slowly at different speeds. Only the clouds move; scenery and gameplay stay fixed. Cloud layers resize with the environment, remain clipped to the sky, and stop drifting when the device requests reduced motion. New artwork, sources, and prompts are documented in `client/public/assets/effects/cloud-v1.md`.
+
+## One, two, three carrot levels
+
+New adventures start at level 1 with one centered sprout. Feeding its carrot advances both players to level 2 with two sprouts. Feed both to advance to level 3 with three sprouts. Feed all three to complete the adventure (six carrots total). Each level resets the patches, shows a brief level-up message, and updates the shared carrot goal. The bunny and sanctuary stars are awarded once after level 3. Start over/replay returns to level 1.
+
+Levels and feeding progress persist in SQLite. Each level advances the action round ID so late packets cannot affect the new sprouts. Existing saves from the earlier three-patch game remain at level 3 with their current progress; choose Start over to try the new progression.
+
+## Level 4: Snake’s Riverbank
+
+After the six carrots in levels 1–3 are fed, the server exchanges Explorer/Helper roles exactly once. The old grower now feeds a friendly snake; the old feeder grows a rabbit in a magical burrow by dragging the watering can over it. Tap the grown rabbit to send it, then tap the landed rabbit on the other screen to feed the snake. This first snake level has one burrow. The new setting is a jungle river clearing with its own snake and rabbit sprite atlases. Feeding uses a closed-mouth gulp with no graphic imagery.
+
+The bunny reward is saved after level 3. Finishing level 4 adds the snake and another three shared stars. Both players agreeing to Start over restores their original jobs and level 1. Reconnecting or restarting preserves the new jobs and level. Previously completed gardens remain completed; Start over to try the expanded adventure.
+
+Artwork paths, exact prompts, and generation notes are in `client/public/assets/characters/snake/README.md`. The PWA precaches the new PNGs and atlases.
