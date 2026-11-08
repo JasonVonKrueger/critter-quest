@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import Phaser from 'phaser';
+import { observeSceneSize } from './resizeScene';
 import { addEnvironment, preloadEnvironment } from './environment';
 import { createBunny, preloadBunny, setBunnyPose } from './bunny';
 export default function World() {
@@ -20,9 +21,8 @@ export default function World() {
       }
     }
     const game = new Phaser.Game({ type:Phaser.AUTO, parent:host.current, width:500, height:350, transparent:false, scene:Meadow, scale:{ mode:Phaser.Scale.RESIZE, autoCenter:Phaser.Scale.CENTER_BOTH }, audio:{noAudio:true} });
-    const resize=new ResizeObserver(()=>game.scale.resize(host.current!.clientWidth,host.current!.clientHeight));
-    resize.observe(host.current);
-    return () => {resize.disconnect();game.destroy(true);};
+    const stopResize=observeSceneSize(host.current,game);
+    return () => {stopResize();game.destroy(true);};
   }, []);
   return <div className="world" ref={host} aria-label="Animated meadow preview with a blinking bunny sprite" />;
 }

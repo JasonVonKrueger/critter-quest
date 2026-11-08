@@ -168,3 +168,9 @@ Patches now begin as sprouts, including after Start over. There is no planting t
 ## Return to the main page
 
 Tap the top-left **Critter Quest** logo from the adventure, sanctuary, or lobby. This closes that player's current connection and clears only the tab's automatic resume token. The garden and named player seat remain saved: choose the player under **Welcome back** to return. The other player's screen shows the disconnect; Home does not reset the mission or delete rewards.
+
+## Production PM2 setup and 502 troubleshooting
+
+From `/home/hosted-apps/critter-quest`, run `npm ci` and `npm run build`, then use `pm2 startOrReload ecosystem.config.cjs --only critter-quest --update-env` and `pm2 save`. The checked-in ecosystem config uses absolute paths relative to the checkout, one forked backend process, the production origin, and `server/data/games.sqlite`. Nginx still serves `client/dist` and proxies API/Socket.IO to port 3001.
+
+For 502 errors, first run `pm2 logs critter-quest --lines 80 --nostream` and `curl -i http://127.0.0.1:3001/api/health` on the server. If the local health request fails, fix the backend error shown in PM2 logs. If it succeeds while the public endpoint fails, inspect `sudo tail -n 50 /var/log/nginx/error.log` and the active Nginx configuration. Native SQLite dependencies must be installed on the server with the same Node version used by PM2. The service user must be able to write the database directory.

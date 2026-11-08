@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import Phaser from 'phaser';
+import { observeSceneSize } from './resizeScene';
 import { addEnvironment, preloadEnvironment } from './environment';
 import { createBunny, preloadBunny, setBunnyPose, setBunnyHungry } from './bunny';
 import type { MissionState, Role } from '@critter-quest/shared';
@@ -136,9 +137,8 @@ export default function MissionWorld({state,role,tap,hug,feed,water,hungry=false
       }
     }
     game.current=new Phaser.Game({type:Phaser.AUTO,parent:host.current,width:500,height:450,scene:Garden,scale:{mode:Phaser.Scale.RESIZE,autoCenter:Phaser.Scale.CENTER_BOTH},audio:{noAudio:true}});
-    const resize=new ResizeObserver(()=>game.current?.scale.resize(host.current!.clientWidth,host.current!.clientHeight));
-    resize.observe(host.current);
-    return()=>{resize.disconnect();game.current?.destroy(true);game.current=null;};
+    const stopResize=observeSceneSize(host.current,game.current);
+    return()=>{stopResize();game.current?.destroy(true);game.current=null;};
   },[role]);
   useEffect(()=>{game.current?.events.emit('mission-state',state);},[state]);
   useEffect(()=>{if(hug)game.current?.events.emit('hug');},[hug]);
