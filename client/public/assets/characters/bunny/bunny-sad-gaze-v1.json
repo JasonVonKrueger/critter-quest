@@ -1,0 +1,92 @@
+{
+  "frames": {
+    "left": {
+      "frame": {
+        "x": 105,
+        "y": 9,
+        "w": 406,
+        "h": 586
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 118,
+        "y": 22,
+        "w": 406,
+        "h": 586
+      },
+      "sourceSize": {
+        "w": 641,
+        "h": 641
+      }
+    },
+    "down": {
+      "frame": {
+        "x": 732,
+        "y": 9,
+        "w": 406,
+        "h": 586
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 118,
+        "y": 22,
+        "w": 406,
+        "h": 586
+      },
+      "sourceSize": {
+        "w": 641,
+        "h": 641
+      }
+    },
+    "right": {
+      "frame": {
+        "x": 105,
+        "y": 637,
+        "w": 406,
+        "h": 585
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 117,
+        "y": 22,
+        "w": 406,
+        "h": 585
+      },
+      "sourceSize": {
+        "w": 640,
+        "h": 640
+      }
+    },
+    "forward": {
+      "frame": {
+        "x": 732,
+        "y": 637,
+        "w": 406,
+        "h": 585
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 117,
+        "y": 22,
+        "w": 406,
+        "h": 585
+      },
+      "sourceSize": {
+        "w": 640,
+        "h": 640
+      }
+    }
+  },
+  "meta": {
+    "image": "bunny-sad-gaze-v1.png",
+    "size": {
+      "w": 1254,
+      "h": 1254
+    },
+    "scale": "1"
+  }
+}

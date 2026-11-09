@@ -194,3 +194,21 @@ After the six carrots in levels 1–3 are fed, the server exchanges Explorer/Hel
 The bunny reward is saved after level 3. Finishing level 4 adds the snake and another three shared stars. Both players agreeing to Start over restores their original jobs and level 1. Reconnecting or restarting preserves the new jobs and level. Previously completed gardens remain completed; Start over to try the expanded adventure.
 
 Artwork paths, exact prompts, and generation notes are in `client/public/assets/characters/snake/README.md`. The PWA precaches the new PNGs and atlases.
+
+The snake adventure now spans levels 4–6: one rabbit burrow, then two, then three. Jobs swap only at level 4 and stay exchanged until Start over. Feed all six rabbits to finish. Previously saved completed single-level snake adventures resume at level 5; earned rewards are retained. New adventures award the snake’s three stars after level 6.
+
+## Looking toward landed food
+
+The snake and big bunny now choose left/down/right eye poses based on the most recently landed food item. In-flight items do not attract their gaze yet. After feeding, gaze follows another waiting item or returns forward when none remain. Blink, eating, and happy reaction frames temporarily take precedence. Hungry bunny gaze preserves the sad expression. New sprites and generation prompts are documented in `client/public/assets/characters/gaze-art.md`.
+
+## Levels 7–9: Hawk’s Highland
+
+After level 6 the players swap jobs again and move from the jungle to a pine-lined mountain clearing. Grow one, then two, then three snakes by watering the magical egg nests. Send each grown snake to the other player, who taps the landed item to feed the friendly hawk. The hawk blinks, looks toward waiting food, and uses a brief closed-beak gulp. The existing whoosh and pouring effects continue.
+
+Finishing level 9 saves the hawk and three more stars (nine shared stars total). Start over restores level 1 and original roles. Older completed level-6 saves continue at level 7 automatically with the correct second role swap and existing rewards intact. Artwork paths and exact prompts are in `client/public/assets/characters/hawk/README.md`.
+
+## Levels 10–12: Owl’s Moonlit Hollow
+
+The next chapter moves to a moonlit forest with a hollow tree, silver moon, and glowing flowers. Jobs swap again at level 10. Grow one, two, then three hawks in magical nests and send them to the owl’s feeder. The owl blinks, looks toward landed food, and has happy, hungry, and gentle feeding poses. Existing drag-to-water, arrival, whoosh, and hug interactions continue.
+
+Finishing level 12 saves the owl and three more stars (12 shared stars total). Previously completed level-9 gardens resume at level 10 with the correct third role swap. Start over restores the original roles and level 1. Exact artwork prompts and asset paths are in `client/public/assets/characters/owl/README.md`.

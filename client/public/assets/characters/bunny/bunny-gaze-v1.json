@@ -1,0 +1,92 @@
+{
+  "frames": {
+    "left": {
+      "frame": {
+        "x": 131,
+        "y": 22,
+        "w": 385,
+        "h": 574
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 122,
+        "y": 15,
+        "w": 385,
+        "h": 574
+      },
+      "sourceSize": {
+        "w": 628,
+        "h": 628
+      }
+    },
+    "down": {
+      "frame": {
+        "x": 724,
+        "y": 23,
+        "w": 387,
+        "h": 575
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 121,
+        "y": 15,
+        "w": 387,
+        "h": 575
+      },
+      "sourceSize": {
+        "w": 629,
+        "h": 629
+      }
+    },
+    "right": {
+      "frame": {
+        "x": 134,
+        "y": 639,
+        "w": 385,
+        "h": 580
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 125,
+        "y": 16,
+        "w": 385,
+        "h": 580
+      },
+      "sourceSize": {
+        "w": 635,
+        "h": 635
+      }
+    },
+    "forward": {
+      "frame": {
+        "x": 727,
+        "y": 641,
+        "w": 388,
+        "h": 578
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 122,
+        "y": 16,
+        "w": 388,
+        "h": 578
+      },
+      "sourceSize": {
+        "w": 633,
+        "h": 633
+      }
+    }
+  },
+  "meta": {
+    "image": "bunny-gaze-v1.png",
+    "size": {
+      "w": 1254,
+      "h": 1254
+    },
+    "scale": "1"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "frames": {
+    "left": {
+      "frame": {
+        "x": 65,
+        "y": 14,
+        "w": 484,
+        "h": 592
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 70,
+        "y": 5,
+        "w": 484,
+        "h": 592
+      },
+      "sourceSize": {
+        "w": 624,
+        "h": 624
+      }
+    },
+    "down": {
+      "frame": {
+        "x": 692,
+        "y": 15,
+        "w": 484,
+        "h": 592
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 70,
+        "y": 5,
+        "w": 484,
+        "h": 592
+      },
+      "sourceSize": {
+        "w": 624,
+        "h": 624
+      }
+    },
+    "right": {
+      "frame": {
+        "x": 64,
+        "y": 642,
+        "w": 485,
+        "h": 591
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 69,
+        "y": 5,
+        "w": 485,
+        "h": 591
+      },
+      "sourceSize": {
+        "w": 623,
+        "h": 623
+      }
+    },
+    "forward": {
+      "frame": {
+        "x": 692,
+        "y": 642,
+        "w": 483,
+        "h": 591
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 70,
+        "y": 5,
+        "w": 483,
+        "h": 591
+      },
+      "sourceSize": {
+        "w": 623,
+        "h": 623
+      }
+    }
+  },
+  "meta": {
+    "image": "snake-gaze-v1.png",
+    "size": {
+      "w": 1254,
+      "h": 1254
+    },
+    "scale": "1"
+  }
+}

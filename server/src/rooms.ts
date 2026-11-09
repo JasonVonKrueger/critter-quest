@@ -22,7 +22,17 @@ export class RoomManager {
           room.mission.fed=[0,1,2,...room.mission.fed.map(id=>id+3)];
         }
         room.mission.hungryAt ??= room.mission.complete?0:nextHungerAt();
-        room.mission.round ??= 1;room.replayReady=[];
+        room.mission.round ??= 1;
+        if(room.mission.complete&&room.mission.level===4&&room.mission.fed.length===7){
+          room.mission.complete=false;room.mission.level=5;room.mission.round++;
+          room.mission.patches=[1,1];room.mission.hungryAt=nextHungerAt();
+        }
+        if(room.mission.complete&&(room.mission.level%3===0&&room.mission.level<12)){
+          room.mission.complete=false;room.mission.level++;room.mission.round++;
+          room.mission.patches=[1];room.mission.hungryAt=nextHungerAt();
+          for(const member of room.players)member.role=member.role==='helper'?'explorer':'helper';
+        }
+        room.replayReady=[];
         for(const player of room.players){player.connected=false;if(room.phase!=='started')player.ready=false;}
       }
     }
@@ -109,7 +119,7 @@ export class RoomManager {
     const oldRound=room.mission.round;
     const result=applyMissionAction(room.mission, player.role, action);
     if(room.mission.round!==oldRound)room.replayReady=[];
-    if(result.ok&&oldLevel===3&&room.mission.level===4){
+    if(result.ok&&(oldLevel%3===0)&&room.mission.level===oldLevel+1){
       for(const member of room.players)member.role=member.role==='helper'?'explorer':'helper';
     }
     if(result.ok)for(const animal of room.mission.unlockedAnimals){
@@ -125,7 +135,7 @@ export class RoomManager {
       room.replayReady=room.replayReady.filter(id=>id!==player.id);
       if(ready)room.replayReady.push(player.id);
       if(room.players.length===2&&room.players.every(p=>p.connected&&room.replayReady.includes(p.id))){
-        if(room.mission.level===4)for(const member of room.players)member.role=member.role==='helper'?'explorer':'helper';
+        if(Math.floor((room.mission.level-1)/3)%2===1)for(const member of room.players)member.role=member.role==='helper'?'explorer':'helper';
         room.mission=createMission(room.mission.round+1);room.replayReady=[];
       }
       return {ok:true};

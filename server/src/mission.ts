@@ -1,5 +1,8 @@
 import type { ActionResult, MissionAction, MissionState, Role } from '@critter-quest/shared';
+export const animals=['bunny','snake','hawk','owl'];
 export const bunnyGarden = { carrotsRequired: 3, growthStages: 3, rewardStars: 3 };
+export const levelOffset=(level:number)=>Math.floor((level-1)/3)*6+((level-1)%3)*(((level-1)%3)+1)/2;
+export const levelCount=(level:number)=>(level-1)%3+1;
 export function nextHungerAt(now=Date.now(),random=Math.random()){
   return now+10000+Math.floor(random*10001);
 }
@@ -22,7 +25,7 @@ export function applyMissionAction(state: MissionState, role: Role, action: Miss
     if (!Number.isInteger(patch) || patch < 0 || patch >= state.patches.length || !Number.isInteger(stage) || stage < 0 || stage >= bunnyGarden.growthStages) return fail('Invalid growing patch.');
     if (state.patches[patch] !== stage) return fail('That patch has already grown.');
     state.patches[patch]++;
-    if (state.patches[patch] === bunnyGarden.growthStages) state.basket.push((state.level===4?6:(state.level*(state.level-1))/2)+patch);
+    if (state.patches[patch] === bunnyGarden.growthStages) state.basket.push(levelOffset(state.level)+patch);
     return { ok: true };
   }
   if (action.type === 'feed') {
@@ -31,13 +34,16 @@ export function applyMissionAction(state: MissionState, role: Role, action: Miss
     if (index < 0) return fail('That item has already been used or has not arrived.');
     state.basket.splice(index, 1); state.fed.push(action.carrot);
     state.hungryAt=nextHungerAt();
-    if(state.fed.length===state.level*(state.level+1)/2&&state.level<4){
+    if(state.fed.length===levelOffset(state.level)+levelCount(state.level)&&state.level<12){
       state.level++;state.round++;
-      state.patches=Array.from({length:state.level===4?1:state.level},()=>1);
-      if(state.level===4){state.stars=3;state.unlockedAnimals=['bunny'];}
+      state.patches=Array.from({length:levelCount(state.level)},()=>1);
+      if((state.level-1)%3===0){
+        const chapters=Math.floor((state.level-1)/3);
+        state.stars=chapters*3;state.unlockedAnimals=animals.slice(0,chapters);
+      }
     }
-    if (state.level===4&&state.fed.length === 7) {
-      state.complete = true; state.hungryAt=0; state.stars = 6; state.unlockedAnimals = ['bunny','snake'];
+    if (state.level===12&&state.fed.length === 24) {
+      state.complete = true; state.hungryAt=0; state.stars = 12; state.unlockedAnimals = [...animals];
     }
     return { ok: true };
   }
