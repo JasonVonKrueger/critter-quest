@@ -1,0 +1,192 @@
+{
+  "frames": {
+    "idle": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 421,
+        "h": 415
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 421,
+        "h": 415
+      },
+      "sourceSize": {
+        "w": 421,
+        "h": 415
+      }
+    },
+    "blink": {
+      "frame": {
+        "x": 421,
+        "y": 0,
+        "w": 421,
+        "h": 415
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 421,
+        "h": 415
+      },
+      "sourceSize": {
+        "w": 421,
+        "h": 415
+      }
+    },
+    "happy": {
+      "frame": {
+        "x": 842,
+        "y": 0,
+        "w": 421,
+        "h": 415
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 421,
+        "h": 415
+      },
+      "sourceSize": {
+        "w": 421,
+        "h": 415
+      }
+    },
+    "eat": {
+      "frame": {
+        "x": 0,
+        "y": 415,
+        "w": 421,
+        "h": 415
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 421,
+        "h": 415
+      },
+      "sourceSize": {
+        "w": 421,
+        "h": 415
+      }
+    },
+    "left": {
+      "frame": {
+        "x": 421,
+        "y": 415,
+        "w": 421,
+        "h": 415
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 421,
+        "h": 415
+      },
+      "sourceSize": {
+        "w": 421,
+        "h": 415
+      }
+    },
+    "down": {
+      "frame": {
+        "x": 842,
+        "y": 415,
+        "w": 421,
+        "h": 415
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 421,
+        "h": 415
+      },
+      "sourceSize": {
+        "w": 421,
+        "h": 415
+      }
+    },
+    "right": {
+      "frame": {
+        "x": 0,
+        "y": 830,
+        "w": 421,
+        "h": 415
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 421,
+        "h": 415
+      },
+      "sourceSize": {
+        "w": 421,
+        "h": 415
+      }
+    },
+    "celebrate": {
+      "frame": {
+        "x": 421,
+        "y": 830,
+        "w": 421,
+        "h": 415
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 421,
+        "h": 415
+      },
+      "sourceSize": {
+        "w": 421,
+        "h": 415
+      }
+    },
+    "sad": {
+      "frame": {
+        "x": 842,
+        "y": 830,
+        "w": 421,
+        "h": 415
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 421,
+        "h": 415
+      },
+      "sourceSize": {
+        "w": 421,
+        "h": 415
+      }
+    }
+  },
+  "meta": {
+    "image": "bobcat-v1.png",
+    "size": {
+      "w": 1263,
+      "h": 1245
+    },
+    "scale": "1"
+  }
+}

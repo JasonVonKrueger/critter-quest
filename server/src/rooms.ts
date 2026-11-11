@@ -1,5 +1,5 @@
 import type { GameStore, SavedGame } from './store.js';
-import { createMission, applyMissionAction, nextHungerAt } from './mission.js';
+import { createMission, applyMissionAction, nextHungerAt, animals } from './mission.js';
 import type { MissionAction } from '@critter-quest/shared';
 import { randomBytes, randomUUID } from 'node:crypto';
 import type { RoomState, RoomResult, PlayerName, Role, ActionResult } from '@critter-quest/shared';
@@ -27,7 +27,7 @@ export class RoomManager {
           room.mission.complete=false;room.mission.level=5;room.mission.round++;
           room.mission.patches=[1,1];room.mission.hungryAt=nextHungerAt();
         }
-        if(room.mission.complete&&(room.mission.level%3===0&&room.mission.level<12)){
+        if(room.mission.complete&&(room.mission.level%3===0&&room.mission.level<animals.length*3)){
           room.mission.complete=false;room.mission.level++;room.mission.round++;
           room.mission.patches=[1];room.mission.hungryAt=nextHungerAt();
           for(const member of room.players)member.role=member.role==='helper'?'explorer':'helper';

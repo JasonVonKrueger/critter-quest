@@ -214,3 +214,9 @@ The next chapter moves to a moonlit forest with a hollow tree, silver moon, and 
 Finishing level 12 saves the owl and three more stars (12 shared stars total). Previously completed level-9 gardens resume at level 10 with the correct third role swap. Start over restores the original roles and level 1. Exact artwork prompts and asset paths are in `client/public/assets/characters/owl/README.md`.
 
 The owl now has a six-frame feather-fluff sprite animation. It plays occasionally while idle (about every 6–11 seconds), then returns to the current gaze and expression. Feeding and other reactions interrupt it. Feet are aligned in atlas metadata so the body does not float. Reduced-motion mode leaves it disabled. Assets and generation notes: `client/public/assets/characters/owl/owl-fluff-v1.md`.
+
+## Levels 13–15: Bobcat’s Woodland
+
+After level 12, jobs swap again and the adventure moves to an autumn woodland clearing. The grower waters owl eggs in magical nests, then sends the hatched owls to the bobcat’s feeder. Levels 13, 14, and 15 require one, two, and three meals. The bobcat blinks, looks toward landed owls, and has hungry, happy, and feeding poses. Feeding stays non-graphic.
+
+Completing level 15 saves the bobcat and three more stars (15 total, 30 meals across the adventure). Completed owl saves open at level 13 with one role swap; reconnects preserve the current chapter and jobs. Start over restores level 1 and the original jobs. Artwork paths and exact built-in imagegen prompts are documented in `client/public/assets/characters/bobcat/README.md`.

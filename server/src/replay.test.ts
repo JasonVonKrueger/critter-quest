@@ -10,37 +10,37 @@ function team(store?:GameStore){
 }
 function finish(manager:RoomManager,a:string,b:string,round:number){
  assert.ok(manager.act(a,{round,id:'hello',type:'discover'}).ok);
- for(let level=1;level<=12;level++){
+ for(let level=1;level<=15;level++){
   const current=manager.state(a)!.mission.round;
-  const count=[1,2,3,1,2,3,1,2,3,1,2,3][level-1],grower=Math.floor((level-1)/3)%2===1?a:b,feeder=Math.floor((level-1)/3)%2===1?b:a;
+  const count=[1,2,3,1,2,3,1,2,3,1,2,3,1,2,3][level-1],grower=Math.floor((level-1)/3)%2===1?a:b,feeder=Math.floor((level-1)/3)%2===1?b:a;
   for(let patch=0;patch<count;patch++){
    for(let stage=1;stage<3;stage++)assert.ok(manager.act(grower,{round:current,id:`${level}-${patch}-${stage}`,type:'grow',patch,stage}).ok);
-   assert.ok(manager.act(feeder,{round:current,id:`f${level}-${patch}`,type:'feed',carrot:([0,1,3,6,7,9,12,13,15,18,19,21][level-1])+patch}).ok);
+   assert.ok(manager.act(feeder,{round:current,id:`f${level}-${patch}`,type:'feed',carrot:([0,1,3,6,7,9,12,13,15,18,19,21,24,25,27][level-1])+patch}).ok);
   }
  }
 }
 test('replay requires both connected votes and preserves sanctuary rewards across rounds',()=>{
  const {manager,a,b}=team();assert.equal(manager.replay('unknown',1,true).ok,false);
  finish(manager,a.token,b.token,1);
- assert.ok(manager.replay(a.token,12,true).ok);assert.ok(manager.replay(a.token,12,true).ok);
+ assert.ok(manager.replay(a.token,15,true).ok);assert.ok(manager.replay(a.token,15,true).ok);
  assert.equal(manager.state(a.token)?.replayReady.length,1);
  assert.equal(manager.state(a.token)?.mission.complete,true);
- assert.ok(manager.replay(a.token,12,false).ok);assert.equal(manager.state(a.token)?.replayReady.length,0);
- manager.replay(a.token,12,true);manager.replay(b.token,12,true);
- const state=manager.state(a.token)!;assert.equal(state.mission.round,13);assert.deepEqual(state.mission.patches,[1]);
- assert.deepEqual(state.sanctuary,{stars:12,unlockedAnimals:['bunny','snake','hawk','owl']});assert.equal(state.players[0].name,'Raelyn');
- assert.equal(manager.replay(a.token,12,true).ok,false);
+ assert.ok(manager.replay(a.token,15,false).ok);assert.equal(manager.state(a.token)?.replayReady.length,0);
+ manager.replay(a.token,15,true);manager.replay(b.token,15,true);
+ const state=manager.state(a.token)!;assert.equal(state.mission.round,16);assert.deepEqual(state.mission.patches,[1]);
+ assert.deepEqual(state.sanctuary,{stars:15,unlockedAnimals:['bunny','snake','hawk','owl','bobcat']});assert.equal(state.players[0].name,'Raelyn');
+ assert.equal(manager.replay(a.token,15,true).ok,false);
  assert.equal(manager.act(b.token,{round:1,id:'old',type:'grow',patch:0,stage:0}).ok,false);
  assert.equal(manager.act(a.token,{round:1,id:'old-feed',type:'feed',carrot:0}).ok,false);
- finish(manager,a.token,b.token,13);assert.deepEqual(manager.state(a.token)?.sanctuary,{stars:12,unlockedAnimals:['bunny','snake','hawk','owl']});
- assert.equal(manager.replay(a.token,12,true).ok,false);
+ finish(manager,a.token,b.token,16);assert.deepEqual(manager.state(a.token)?.sanctuary,{stars:15,unlockedAnimals:['bunny','snake','hawk','owl','bobcat']});
+ assert.equal(manager.replay(a.token,15,true).ok,false);
 });
 test('disconnect cancels that player’s replay consent',()=>{
  const {manager,a,b}=team();finish(manager,a.token,b.token,1);
- manager.replay(a.token,12,true);manager.disconnect(a.token);manager.replay(b.token,12,true);
- assert.equal(manager.state(b.token)?.mission.round,12);assert.equal(manager.replay(a.token,12,true).ok,false);
+ manager.replay(a.token,15,true);manager.disconnect(a.token);manager.replay(b.token,15,true);
+ assert.equal(manager.state(b.token)?.mission.round,15);assert.equal(manager.replay(a.token,15,true).ok,false);
  manager.resume(a.token);assert.equal(manager.state(a.token)?.replayReady.includes(a.playerId),false);
- manager.replay(a.token,12,true);assert.equal(manager.state(a.token)?.mission.round,13);
+ manager.replay(a.token,15,true);assert.equal(manager.state(a.token)?.mission.round,16);
 });
 test('old saves migrate sanctuary progress; restart retains replay rounds but clears consent',()=>{
  let data:SavedGame|undefined;
@@ -50,9 +50,9 @@ test('old saves migrate sanctuary progress; restart retains replay rounds but cl
  const legacy=data!.rooms[0][1] as unknown as Record<string,unknown>;delete legacy.sanctuary;delete legacy.replayReady;
  delete (legacy.mission as Record<string,unknown>).round;
  let restored=new RoomManager(store);restored.resume(a.token);restored.resume(b.token);
- assert.deepEqual(restored.state(a.token)?.sanctuary,{stars:12,unlockedAnimals:['bunny','snake','hawk','owl']});
+ assert.deepEqual(restored.state(a.token)?.sanctuary,{stars:15,unlockedAnimals:['bunny','snake','hawk','owl','bobcat']});
  restored.replay(a.token,1,true);restored.replay(b.token,1,true);
- restored=new RoomManager(store);const resumed=restored.resume(a.token);assert.ok(resumed.ok);assert.equal(resumed.room.mission.round,2);assert.deepEqual(resumed.room.replayReady,[]);assert.equal(resumed.room.sanctuary.stars,12);
+ restored=new RoomManager(store);const resumed=restored.resume(a.token);assert.ok(resumed.ok);assert.equal(resumed.room.mission.round,2);assert.deepEqual(resumed.room.replayReady,[]);assert.equal(resumed.room.sanctuary.stars,15);
 });
 
 test('start over resets an unfinished mission only after both players agree',()=>{
