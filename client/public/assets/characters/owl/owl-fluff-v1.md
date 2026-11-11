@@ -1,0 +1,9 @@
+# Owl feather-fluff animation
+
+Generated with the built-in imagegen tool from `owl-v1.png` as the character reference. The PNG is copied unchanged. Atlas metadata selects six frames, normalizes logical size, and aligns the feet at a shared baseline. The owl is rendered by a Phaser Sprite and plays the sequence at six frames per second every 6–11 seconds while idle. Blinking is paused during the sequence, and feeding/happy reactions interrupt it. Afterward, current gaze and mood resume. Reduced-motion mode disables the idle fluff sequence. No mesh deformation, body floating, or whole-character scaling is used for fluffing.
+
+Assets: `owl-fluff-v1.png`, `owl-fluff-v1.json`.
+
+## Prompt
+
+Create a genuine 6-frame sequential FEATHER-FLUFF animation sprite sheet for this exact great horned owl character (use top-left reference pose as identity). EXACTLY 3 columns by 2 rows, equal square cells, transparent background, no labels/borders/text. Read frames left-to-right top row then bottom row. All frames same full-body scale, same head center and feet baseline, wings folded, identical lighting/character details. Frame1 neutral resting feathers. Frame2 breast feathers starting to lift and spread slightly. Frame3 round puffed breast, shoulder feathers visibly raised. Frame4 MAXIMUM FLUFF: expanded round body silhouette, individual feather tips ruffled along chest and folded wings, eyes happily closed. Frame5 feathers starting to settle, intermediate puff. Frame6 neutral settled feathers matching frame1. Important actual feather-shape changes, not just scaling the whole owl. Head and feet remain planted, no floating, no head tilt, no flying or wings spread. Generous transparent padding around full body in every cell. Warm brown plumage, cream facial discs and barred chest, prominent ear tufts, amber eyes. Polished dimensional storybook mobile game art. Same owl as reference.

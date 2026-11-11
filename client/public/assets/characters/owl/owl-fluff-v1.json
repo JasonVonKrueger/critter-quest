@@ -1,0 +1,131 @@
+{
+  "frames": {
+    "fluff-1": {
+      "frame": {
+        "x": 132,
+        "y": 15,
+        "w": 282,
+        "h": 437
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 102,
+        "y": 7,
+        "w": 282,
+        "h": 437
+      },
+      "sourceSize": {
+        "w": 485,
+        "h": 485
+      }
+    },
+    "fluff-2": {
+      "frame": {
+        "x": 617,
+        "y": 16,
+        "w": 308,
+        "h": 436
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 88,
+        "y": 8,
+        "w": 308,
+        "h": 436
+      },
+      "sourceSize": {
+        "w": 485,
+        "h": 485
+      }
+    },
+    "fluff-3": {
+      "frame": {
+        "x": 1094,
+        "y": 15,
+        "w": 349,
+        "h": 437
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 68,
+        "y": 7,
+        "w": 349,
+        "h": 437
+      },
+      "sourceSize": {
+        "w": 485,
+        "h": 485
+      }
+    },
+    "fluff-4": {
+      "frame": {
+        "x": 86,
+        "y": 528,
+        "w": 379,
+        "h": 436
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 53,
+        "y": 8,
+        "w": 379,
+        "h": 436
+      },
+      "sourceSize": {
+        "w": 485,
+        "h": 485
+      }
+    },
+    "fluff-5": {
+      "frame": {
+        "x": 602,
+        "y": 529,
+        "w": 339,
+        "h": 435
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 73,
+        "y": 9,
+        "w": 339,
+        "h": 435
+      },
+      "sourceSize": {
+        "w": 485,
+        "h": 485
+      }
+    },
+    "fluff-6": {
+      "frame": {
+        "x": 1123,
+        "y": 529,
+        "w": 285,
+        "h": 435
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 100,
+        "y": 9,
+        "w": 285,
+        "h": 435
+      },
+      "sourceSize": {
+        "w": 485,
+        "h": 485
+      }
+    }
+  },
+  "meta": {
+    "size": {
+      "w": 1536,
+      "h": 1024
+    },
+    "scale": "1"
+  }
+}

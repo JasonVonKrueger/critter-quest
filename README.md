@@ -212,3 +212,5 @@ Finishing level 9 saves the hawk and three more stars (nine shared stars total).
 The next chapter moves to a moonlit forest with a hollow tree, silver moon, and glowing flowers. Jobs swap again at level 10. Grow one, two, then three hawks in magical nests and send them to the owl’s feeder. The owl blinks, looks toward landed food, and has happy, hungry, and gentle feeding poses. Existing drag-to-water, arrival, whoosh, and hug interactions continue.
 
 Finishing level 12 saves the owl and three more stars (12 shared stars total). Previously completed level-9 gardens resume at level 10 with the correct third role swap. Start over restores the original roles and level 1. Exact artwork prompts and asset paths are in `client/public/assets/characters/owl/README.md`.
+
+The owl now has a six-frame feather-fluff sprite animation. It plays occasionally while idle (about every 6–11 seconds), then returns to the current gaze and expression. Feeding and other reactions interrupt it. Feet are aligned in atlas metadata so the body does not float. Reduced-motion mode leaves it disabled. Assets and generation notes: `client/public/assets/characters/owl/owl-fluff-v1.md`.

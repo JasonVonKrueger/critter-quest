@@ -1,0 +1,132 @@
+{
+  "frames": {
+    "stretch-1": {
+      "frame": {
+        "x": 119,
+        "y": 13,
+        "w": 294,
+        "h": 441
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 109,
+        "y": 13,
+        "w": 294,
+        "h": 441
+      },
+      "sourceSize": {
+        "w": 512,
+        "h": 512
+      }
+    },
+    "stretch-2": {
+      "frame": {
+        "x": 612,
+        "y": 13,
+        "w": 330,
+        "h": 441
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 91,
+        "y": 13,
+        "w": 330,
+        "h": 441
+      },
+      "sourceSize": {
+        "w": 512,
+        "h": 512
+      }
+    },
+    "stretch-3": {
+      "frame": {
+        "x": 1065,
+        "y": 13,
+        "w": 445,
+        "h": 441
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 33,
+        "y": 13,
+        "w": 445,
+        "h": 441
+      },
+      "sourceSize": {
+        "w": 512,
+        "h": 512
+      }
+    },
+    "stretch-4": {
+      "frame": {
+        "x": 11,
+        "y": 526,
+        "w": 496,
+        "h": 440
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 14,
+        "w": 496,
+        "h": 440
+      },
+      "sourceSize": {
+        "w": 512,
+        "h": 512
+      }
+    },
+    "stretch-5": {
+      "frame": {
+        "x": 557,
+        "y": 525,
+        "w": 443,
+        "h": 441
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 34,
+        "y": 13,
+        "w": 443,
+        "h": 441
+      },
+      "sourceSize": {
+        "w": 512,
+        "h": 512
+      }
+    },
+    "stretch-6": {
+      "frame": {
+        "x": 1144,
+        "y": 525,
+        "w": 293,
+        "h": 441
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 109,
+        "y": 13,
+        "w": 293,
+        "h": 441
+      },
+      "sourceSize": {
+        "w": 512,
+        "h": 512
+      }
+    }
+  },
+  "meta": {
+    "image": "hawk-stretch-v1.png",
+    "size": {
+      "w": 1536,
+      "h": 1024
+    },
+    "scale": "1"
+  }
+}
