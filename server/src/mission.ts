@@ -1,5 +1,5 @@
 import type { ActionResult, MissionAction, MissionState, Role } from '@critter-quest/shared';
-export const animals=['bunny','snake','hawk','owl','bobcat'];
+export const animals=['bunny','snake','hawk','owl','bobcat','wolf'];
 export const bunnyGarden = { carrotsRequired: 3, growthStages: 3, rewardStars: 3 };
 export const levelOffset=(level:number)=>Math.floor((level-1)/3)*6+((level-1)%3)*(((level-1)%3)+1)/2;
 export const levelCount=(level:number)=>(level-1)%3+1;

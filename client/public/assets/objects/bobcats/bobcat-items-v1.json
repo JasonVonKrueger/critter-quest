@@ -1,0 +1,92 @@
+{
+  "frames": {
+    "burrow": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 724,
+        "h": 724
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 724,
+        "h": 724
+      },
+      "sourceSize": {
+        "w": 724,
+        "h": 724
+      }
+    },
+    "ready": {
+      "frame": {
+        "x": 724,
+        "y": 0,
+        "w": 724,
+        "h": 724
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 724,
+        "h": 724
+      },
+      "sourceSize": {
+        "w": 724,
+        "h": 724
+      }
+    },
+    "item": {
+      "frame": {
+        "x": 1448,
+        "y": 0,
+        "w": 724,
+        "h": 724
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 724,
+        "h": 724
+      },
+      "sourceSize": {
+        "w": 724,
+        "h": 724
+      }
+    },
+    "sent": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 724,
+        "h": 724
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 724,
+        "h": 724
+      },
+      "sourceSize": {
+        "w": 724,
+        "h": 724
+      }
+    }
+  },
+  "meta": {
+    "image": "bobcat-items-v1.png",
+    "size": {
+      "w": 2172,
+      "h": 724
+    },
+    "scale": "1"
+  }
+}

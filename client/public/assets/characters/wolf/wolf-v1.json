@@ -1,0 +1,192 @@
+{
+  "frames": {
+    "idle": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 415,
+        "h": 421
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 415,
+        "h": 421
+      },
+      "sourceSize": {
+        "w": 415,
+        "h": 421
+      }
+    },
+    "blink": {
+      "frame": {
+        "x": 415,
+        "y": 0,
+        "w": 416,
+        "h": 421
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 416,
+        "h": 421
+      },
+      "sourceSize": {
+        "w": 416,
+        "h": 421
+      }
+    },
+    "happy": {
+      "frame": {
+        "x": 831,
+        "y": 0,
+        "w": 415,
+        "h": 421
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 415,
+        "h": 421
+      },
+      "sourceSize": {
+        "w": 415,
+        "h": 421
+      }
+    },
+    "eat": {
+      "frame": {
+        "x": 0,
+        "y": 421,
+        "w": 415,
+        "h": 420
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 415,
+        "h": 420
+      },
+      "sourceSize": {
+        "w": 415,
+        "h": 420
+      }
+    },
+    "left": {
+      "frame": {
+        "x": 415,
+        "y": 421,
+        "w": 416,
+        "h": 420
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 416,
+        "h": 420
+      },
+      "sourceSize": {
+        "w": 416,
+        "h": 420
+      }
+    },
+    "down": {
+      "frame": {
+        "x": 831,
+        "y": 421,
+        "w": 415,
+        "h": 420
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 415,
+        "h": 420
+      },
+      "sourceSize": {
+        "w": 415,
+        "h": 420
+      }
+    },
+    "right": {
+      "frame": {
+        "x": 0,
+        "y": 841,
+        "w": 415,
+        "h": 421
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 415,
+        "h": 421
+      },
+      "sourceSize": {
+        "w": 415,
+        "h": 421
+      }
+    },
+    "celebrate": {
+      "frame": {
+        "x": 415,
+        "y": 841,
+        "w": 416,
+        "h": 421
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 416,
+        "h": 421
+      },
+      "sourceSize": {
+        "w": 416,
+        "h": 421
+      }
+    },
+    "sad": {
+      "frame": {
+        "x": 831,
+        "y": 841,
+        "w": 415,
+        "h": 421
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 415,
+        "h": 421
+      },
+      "sourceSize": {
+        "w": 415,
+        "h": 421
+      }
+    }
+  },
+  "meta": {
+    "image": "wolf-v1.png",
+    "size": {
+      "w": 1246,
+      "h": 1262
+    },
+    "scale": "1"
+  }
+}

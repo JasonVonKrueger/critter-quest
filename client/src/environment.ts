@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
-export type Environment='meadow'|'garden'|'jungle'|'mountain'|'moonlit'|'woodland';
+export type Environment='meadow'|'garden'|'jungle'|'mountain'|'moonlit'|'woodland'|'pine';
 export function preloadEnvironment(scene:Phaser.Scene,kind:Environment){
-  scene.load.image(`${kind}-v1`,kind==='woodland'?'/assets/backgrounds/woodland-v1.png':kind==='moonlit'?'/assets/backgrounds/moonlit-v1.png':kind==='mountain'?'/assets/backgrounds/mountain-v1.png':kind==='jungle'?'/assets/backgrounds/jungle-v1.png':kind==='garden'?'/assets/backgrounds/garden-v3.png':'/assets/backgrounds/meadow-v2.png');
+  scene.load.image(`${kind}-v1`,kind==='pine'?'/assets/backgrounds/pine-v1.png':kind==='woodland'?'/assets/backgrounds/woodland-v1.png':kind==='moonlit'?'/assets/backgrounds/moonlit-v1.png':kind==='mountain'?'/assets/backgrounds/mountain-v1.png':kind==='jungle'?'/assets/backgrounds/jungle-v1.png':kind==='garden'?'/assets/backgrounds/garden-v3.png':'/assets/backgrounds/meadow-v2.png');
   scene.load.image('cloud-v1','/assets/effects/cloud-v1.png');
 }
 /** Cover the whole viewport independently of the centered gameplay coordinates. */
@@ -15,7 +15,7 @@ export function addEnvironment(scene:Phaser.Scene,kind:Environment,worldHeight:n
     : [[.50,0],[1,0],[1,.09],[.90,.10],[.85,.13],[.72,.17],[.59,.16],[.46,.17],[.40,.14],[.47,.07]];
   const maskArt=scene.make.graphics({x:0,y:0},false);
   const mask=maskArt.createGeometryMask();
-  const clouds=kind!=='jungle'&&kind!=='moonlit'&&kind!=='woodland'&&scene.textures.exists('cloud-v1')?[0,1,2].map(i=>({
+  const clouds=kind!=='jungle'&&kind!=='moonlit'&&kind!=='woodland'&&kind!=='pine'&&scene.textures.exists('cloud-v1')?[0,1,2].map(i=>({
     image:scene.add.image(0,0,'cloud-v1').setDepth(-99).setMask(mask),
     x:.4+i*.22,y:.055+(i%2)*.045,width:.18+i*.025,speed:.000006+i*.0000015,
   })):[];

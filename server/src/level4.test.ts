@@ -44,9 +44,17 @@ test('level four swaps jobs exactly once and only the new roles can grow and fee
   for(let stage=1;stage<3;stage++)assert.ok(manager.act(b.token,{round:level,id:`bobcat${level}-${patch}-${stage}`,type:'grow',patch,stage}).ok);
   assert.ok(manager.act(a.token,{round:level,id:`bobcatmeal${level}-${patch}`,type:'feed',carrot:24+(level-13)*(level-12)/2+patch}).ok);
  }
- assert.equal(state.mission.complete,true);assert.deepEqual(state.sanctuary,{stars:15,unlockedAnimals:['bunny','snake','hawk','owl','bobcat']});
+ assert.equal(state.mission.level,16);assert.equal(state.players[0].role,'helper');assert.equal(state.players[1].role,'explorer');
+ assert.equal(state.mission.complete,false);
+ assert.equal(manager.act(b.token,{round:16,id:'wrong-wolf-grower',type:'grow',patch:0,stage:1}).ok,false);
+ assert.equal(manager.act(a.token,{round:15,id:'stale-bobcat-feed',type:'feed',carrot:29}).ok,false);
+ for(let level=16;level<=18;level++)for(let patch=0;patch<level-15;patch++){
+  for(let stage=1;stage<3;stage++)assert.ok(manager.act(a.token,{round:level,id:`wolf${level}-${patch}-${stage}`,type:'grow',patch,stage}).ok);
+  assert.ok(manager.act(b.token,{round:level,id:`wolfmeal${level}-${patch}`,type:'feed',carrot:30+(level-16)*(level-15)/2+patch}).ok);
+ }
+ assert.equal(state.mission.complete,true);assert.deepEqual(state.sanctuary,{stars:18,unlockedAnimals:['bunny','snake','hawk','owl','bobcat','wolf']});
  assert.equal(manager.act(b.token,{round:4,id:'duplicate-rabbit',type:'feed',carrot:6}).ok,false);
- manager.replay(a.token,15,true);manager.replay(b.token,15,true);
+ manager.replay(a.token,18,true);manager.replay(b.token,18,true);
  assert.equal(state.players[0].role,'explorer');assert.equal(state.players[1].role,'helper');assert.equal(state.mission.level,1);
 });
 test('a server restart preserves the jungle and exchanged jobs without swapping twice',()=>{
@@ -90,4 +98,14 @@ test('completed owl saves enter level thirteen and swap jobs exactly once across
  const resumed=new RoomManager(store).resume(a.token);assert.ok(resumed.ok);
  assert.equal(resumed.room.mission.level,13);assert.equal(resumed.room.mission.round,13);assert.equal(resumed.room.mission.complete,false);assert.deepEqual(resumed.room.mission.patches,[1]);assert.equal(resumed.room.players[0].role,'explorer');assert.equal(resumed.room.sanctuary.stars,12);
  const again=new RoomManager(store).resume(a.token);assert.ok(again.ok);assert.equal(again.room.players[0].role,'explorer');assert.equal(again.room.mission.level,13);
+});
+
+test('completed bobcat saves enter level sixteen and preserve the fifth role swap across restarts',()=>{
+ const {manager,a,b}=enterJungle();const room=structuredClone(manager.state(a.token)!);
+ room.mission.level=15;room.mission.round=15;room.mission.complete=true;room.mission.fed=Array.from({length:30},(_,i)=>i);room.mission.patches=[3,3,3];room.mission.stars=15;room.mission.unlockedAnimals=['bunny','snake','hawk','owl','bobcat'];room.sanctuary={stars:15,unlockedAnimals:['bunny','snake','hawk','owl','bobcat']};room.players[0].role='explorer';room.players[1].role='helper';
+ let data:SavedGame={version:1,rooms:[[room.code,room]],sessions:[[a.token,{code:room.code,id:a.playerId}],[b.token,{code:room.code,id:b.playerId}]]};
+ const store:GameStore={load:()=>structuredClone(data),save:snapshot=>{data=structuredClone(snapshot);}};
+ const resumed=new RoomManager(store).resume(a.token);assert.ok(resumed.ok);
+ assert.equal(resumed.room.mission.level,16);assert.equal(resumed.room.mission.round,16);assert.equal(resumed.room.mission.complete,false);assert.deepEqual(resumed.room.mission.patches,[1]);assert.equal(resumed.room.players[0].role,'helper');assert.equal(resumed.room.sanctuary.stars,15);
+ const again=new RoomManager(store).resume(a.token);assert.ok(again.ok);assert.equal(again.room.players[0].role,'helper');assert.equal(again.room.mission.level,16);
 });

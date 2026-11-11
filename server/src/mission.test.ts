@@ -12,9 +12,9 @@ test('invalid roles and payloads leave mission unchanged',()=>{
 });
 test('levels advance through carrots and snake feeding without duplicate rewards',()=>{
  const state=createMission();assert.deepEqual(state.patches,[1]);
- for(let level=1;level<=15;level++){
-  const count=[1,2,3,1,2,3,1,2,3,1,2,3,1,2,3][level-1];
-  const round=state.round,offset=[0,1,3,6,7,9,12,13,15,18,19,21,24,25,27][level-1];
+ for(let level=1;level<=18;level++){
+  const count=[1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3][level-1];
+  const round=state.round,offset=[0,1,3,6,7,9,12,13,15,18,19,21,24,25,27,30,31,33][level-1];
   for(let patch=0;patch<count;patch++)for(let stage=1;stage<3;stage++){
    const action={round,id:`${level}-${patch}-${stage}`,type:'grow' as const,patch,stage};
    assert.ok(applyMissionAction(state,'helper',action).ok);
@@ -25,10 +25,10 @@ test('levels advance through carrots and snake feeding without duplicate rewards
    assert.ok(applyMissionAction(state,'explorer',action).ok);
    assert.equal(applyMissionAction(state,'explorer',action).ok,false);
   }
-  assert.equal(state.complete,level===15);
+  assert.equal(state.complete,level===18);
   if(level<3){assert.equal(state.level,level+1);assert.equal(state.patches.length,level+1);assert.equal(state.stars,0);}
  }
- assert.equal(state.fed.length,30);assert.equal(state.stars,15);assert.deepEqual(state.unlockedAnimals,['bunny','snake','hawk','owl','bobcat']);
+ assert.equal(state.fed.length,36);assert.equal(state.stars,18);assert.deepEqual(state.unlockedAnimals,['bunny','snake','hawk','owl','bobcat','wolf']);
 });
 test('room gates mission actions and reconnect restores progress',()=>{
  const manager=new RoomManager();const a=manager.create();assert.ok(a.ok);
@@ -61,7 +61,7 @@ test('hunger deadlines are 10–20 seconds and reset after feeding',()=>{
  state.basket=[4,5];
  applyMissionAction(state,'explorer',{round:1,id:'meal2',type:'feed',carrot:4});
  applyMissionAction(state,'explorer',{round:1,id:'meal3',type:'feed',carrot:5});
- assert.equal(state.level,4);for(let carrot=6;carrot<30;carrot++){state.basket=[carrot];applyMissionAction(state,'explorer',{round:state.round,id:`snake-${carrot}`,type:'feed',carrot});}
+ assert.equal(state.level,4);for(let carrot=6;carrot<36;carrot++){state.basket=[carrot];applyMissionAction(state,'explorer',{round:state.round,id:`snake-${carrot}`,type:'feed',carrot});}
  assert.equal(state.complete,true);assert.equal(state.hungryAt,0);
 });
 

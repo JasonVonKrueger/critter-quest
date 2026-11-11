@@ -220,3 +220,9 @@ The owl now has a six-frame feather-fluff sprite animation. It plays occasionall
 After level 12, jobs swap again and the adventure moves to an autumn woodland clearing. The grower waters owl eggs in magical nests, then sends the hatched owls to the bobcat’s feeder. Levels 13, 14, and 15 require one, two, and three meals. The bobcat blinks, looks toward landed owls, and has hungry, happy, and feeding poses. Feeding stays non-graphic.
 
 Completing level 15 saves the bobcat and three more stars (15 total, 30 meals across the adventure). Completed owl saves open at level 13 with one role swap; reconnects preserve the current chapter and jobs. Start over restores level 1 and the original jobs. Artwork paths and exact built-in imagegen prompts are documented in `client/public/assets/characters/bobcat/README.md`.
+
+## Levels 16–18: Wolf’s Pine Forest
+
+The next chapter moves to a twilight pine forest with a friendly gray wolf. Jobs swap at level 16. Grow magical bobcats in burrows, send them, then tap them after landing to feed the wolf. Levels 16, 17, and 18 require one, two, and three meals. The wolf blinks, tracks landed bobcats, and has hungry, happy, and gentle feeding poses.
+
+Finishing level 18 saves the wolf and three more stars (18 total, 36 meals across the adventure). Completed bobcat saves resume at level 16 with the fifth job swap applied once. Start over restores the original jobs and level 1. Artwork paths and exact built-in imagegen prompts are in `client/public/assets/characters/wolf/README.md`.

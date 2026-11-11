@@ -13,21 +13,21 @@ test('SQLite store restores shared completion, tokens, names and rewards after r
   const a=rooms.create();assert.ok(a.ok);const b=rooms.join(a.room.code);assert.ok(b.ok);
   rooms.select(a.token,'Raelyn','explorer');rooms.select(b.token,'Cooper','helper');rooms.ready(a.token,true);rooms.ready(b.token,true);
   rooms.act(a.token,{round:1,id:'hello',type:'discover'});
-  for(let level=1;level<=15;level++){
+  for(let level=1;level<=18;level++){
    const round=rooms.state(a.token)!.mission.round;
-   const count=[1,2,3,1,2,3,1,2,3,1,2,3,1,2,3][level-1],grower=Math.floor((level-1)/3)%2===1?a.token:b.token,feeder=Math.floor((level-1)/3)%2===1?b.token:a.token;
+   const count=[1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3][level-1],grower=Math.floor((level-1)/3)%2===1?a.token:b.token,feeder=Math.floor((level-1)/3)%2===1?b.token:a.token;
    for(let patch=0;patch<count;patch++){
     for(let stage=1;stage<3;stage++)assert.ok(rooms.act(grower,{round,id:`${level}-${patch}-${stage}`,type:'grow',patch,stage}).ok);
-    assert.ok(rooms.act(feeder,{round,id:`f${level}-${patch}`,type:'feed',carrot:([0,1,3,6,7,9,12,13,15,18,19,21,24,25,27][level-1])+patch}).ok);
+    assert.ok(rooms.act(feeder,{round,id:`f${level}-${patch}`,type:'feed',carrot:([0,1,3,6,7,9,12,13,15,18,19,21,24,25,27,30,31,33][level-1])+patch}).ok);
    }
   }
   store.close();store=new SqliteGameStore(join(dir,'games.sqlite'));
   const restarted=new RoomManager(store);const resumed=restarted.resume(a.token);assert.ok(resumed.ok);
   assert.equal(resumed.playerId,a.playerId);assert.equal(resumed.room.players[1].connected,false);
-  assert.equal(resumed.room.mission.stars,15);assert.deepEqual(resumed.room.mission.unlockedAnimals,['bunny','snake','hawk','owl','bobcat']);
+  assert.equal(resumed.room.mission.stars,18);assert.deepEqual(resumed.room.mission.unlockedAnimals,['bunny','snake','hawk','owl','bobcat','wolf']);
   assert.ok(restarted.resume(b.token).ok);assert.equal(restarted.join(a.room.code).ok,false);
   assert.equal(restarted.act(a.token,{round:1,id:'duplicate',type:'feed',carrot:2}).ok,false);
-  assert.equal(restarted.state(a.token)?.mission.stars,15);
+  assert.equal(restarted.state(a.token)?.mission.stars,18);
  }finally{store?.close();rmSync(dir,{recursive:true,force:true});}
 });
 test('a failed save rolls back game actions and returns an error',()=>{
