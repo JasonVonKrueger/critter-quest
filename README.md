@@ -89,7 +89,7 @@ Verified with nine logic tests, TypeScript, ESLint, the production build, and a 
 
 Tap **Sanctuary** during or after the mission. Before rescue, the habitat is waiting; after three feedings, both children see their bunny and three shared stars. Tap the bunny to visit, and tap **Adventure** to return. Each player can navigate independently.
 
-The shared garden is the MVP game profile. Room state, roles, mission inventory, rewards, and opaque reconnect tokens are persisted together. The landing screen lists up to six recently used player seats stored in this browser. Use the correct named seat when returning. Choosing a seat that is already open elsewhere transfers that connection. A fresh tab still allows a second player to join normally; saved seats are never resumed automatically from localStorage.
+The shared garden is the MVP game profile. Room state, roles, mission inventory, rewards, and opaque reconnect tokens are persisted together. The landing screen offers creating a new game or joining by code. It does not list or store previous player seats. Reloading an active tab or reconnecting after a network interruption still restores that tab’s current session.
 
 - Default save file: `server/data/games.sqlite` when launched via the npm scripts. This directory is ignored by Git.
 - Override with server environment variable `DATABASE_FILE`; use an absolute path on hosted deployments and a persistent disk.
@@ -167,7 +167,7 @@ Patches now begin as sprouts, including after Start over. There is no planting t
 
 ## Return to the main page
 
-Tap the top-left **Critter Quest** logo from the adventure, sanctuary, or lobby. This closes that player's current connection and clears only the tab's automatic resume token. The garden and named player seat remain saved: choose the player under **Welcome back** to return. The other player's screen shows the disconnect; Home does not reset the mission or delete rewards.
+Tap the top-left **Critter Quest** logo from the adventure, sanctuary, or lobby. This closes that player's current connection and clears only the tab's automatic resume token. The game remains saved on the server, but the home screen does not offer returning to previous games. The other player's screen shows the disconnect; Home does not reset the mission or delete rewards.
 
 ## Production PM2 setup and 502 troubleshooting
 

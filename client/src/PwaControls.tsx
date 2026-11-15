@@ -33,7 +33,7 @@ export default function PwaControls(){
     {!installed&&<button disabled={installing} onClick={install}>📲 {prompt?'Install Critter Quest':'Add to home screen'}</button>}
     {help&&!installed&&<p>On iPhone or iPad, open in Safari, tap Share, then Add to Home Screen. On Android, use your browser menu’s Install app or Add to Home screen option. Installation requires HTTPS (or localhost for testing).</p>}
     {needRefresh&&<div className="pwa-update"><p>A new version is ready. Finish your adventure before updating.</p><button onClick={()=>void updateServiceWorker(true)}>Update & reopen</button><button onClick={()=>setNeedRefresh(false)}>Later</button></div>}
-    {offline&&<p role="status">You’re offline. Your saved garden is safe on the server. Reconnect to play together.</p>}
+    {offline&&<p role="status">You’re offline. Your saved game is safe on the server. Reconnect to play together.</p>}
     {message&&<p role="status">{message}</p>}
   </aside>;
 }

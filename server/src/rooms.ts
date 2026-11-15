@@ -45,7 +45,7 @@ export class RoomManager {
     if(result.ok && this.store)try{this.store.save(this.snapshot());}catch(error){
       this.rooms=new Map(before.rooms);this.sessions=new Map(before.sessions);
       console.error('Could not save game progress:',error);
-      return {ok:false,error:'Your garden could not save. Please try again.'};
+      return {ok:false,error:'Your game could not save. Please try again.'};
     }
     return result;
   }
@@ -68,8 +68,8 @@ export class RoomManager {
   private joinRoom(input: string): RoomResult {
     if (typeof input !== 'string') return { ok: false, error: 'Please enter a room code.' };
     const room = this.rooms.get(input.trim().toUpperCase());
-    if (!room) return { ok: false, error: 'We couldn’t find that garden. Check your code.' };
-    if (room.players.length >= 2) return { ok: false, error: 'This garden already has two friends.' };
+    if (!room) return { ok: false, error: 'We couldn’t find that game. Check your code.' };
+    if (room.players.length >= 2) return { ok: false, error: 'This game already has two friends.' };
     const id = randomUUID(), token = randomBytes(24).toString('hex');
     room.players.push({ id, role: room.players.length ? 'helper' : 'explorer', connected: true, ready: false });
     room.phase = room.players.length === 2 ? 'ready' : 'waiting';
@@ -80,7 +80,7 @@ export class RoomManager {
     const session = this.sessions.get(token);
     const room = session && this.rooms.get(session.code);
     const player = room?.players.find(p => p.id === session?.id);
-    if (!room || !player) return { ok: false, error: 'Your garden has closed. Please create or join a new one.' };
+    if (!room || !player) return { ok: false, error: 'Your game has closed. Please create or join a new one.' };
     player.connected = true;
     return { ok: true, room, token, playerId: player.id };
   }
@@ -93,7 +93,7 @@ export class RoomManager {
   state(token: string): RoomState | undefined { return this.locate(token).room; }
   private selectPlayer(token: string, name: PlayerName, role: Role): ActionResult {
     const { room, player } = this.locate(token);
-    if (!room || !player || !player.connected) return { ok: false, error: 'Reconnect to your garden first.' };
+    if (!room || !player || !player.connected) return { ok: false, error: 'Reconnect to your game first.' };
     if (room.phase === 'started') return { ok: false, error: 'The adventure has already started.' };
     if (!['Raelyn', 'Cooper'].includes(name) || !['explorer', 'helper'].includes(role)) return { ok: false, error: 'Choose a name and role.' };
     if (room.players.some(p => p.id !== player.id && p.name === name)) return { ok: false, error: 'Your friend has already picked that name.' };
@@ -105,7 +105,7 @@ export class RoomManager {
   }
   private readyPlayer(token: string, ready: boolean): ActionResult {
     const { room, player } = this.locate(token);
-    if (!room || !player || !player.connected) return { ok: false, error: 'Reconnect to your garden first.' };
+    if (!room || !player || !player.connected) return { ok: false, error: 'Reconnect to your game first.' };
     if (typeof ready !== 'boolean') return { ok: false, error: 'Invalid ready state.' };
     if (room.phase === 'started') return { ok: true };
     if (!player.name) return { ok: false, error: 'Choose your name and role first.' };
@@ -144,7 +144,7 @@ export class RoomManager {
   }
   hug(token: string, now = Date.now()): ActionResult {
     const {room, player} = this.locate(token);
-    if (!room || !player?.connected) return {ok:false,error:'Join your garden first.'};
+    if (!room || !player?.connected) return {ok:false,error:'Join your game first.'};
     if (now - (this.hugs.get(token) ?? -Infinity) < 3000) return {ok:false,error:'A little moment between hugs!'};
     this.hugs.set(token,now);
     return {ok:true};

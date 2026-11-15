@@ -33,31 +33,31 @@ io.on('connection', socket => {
   socket.on('room:resume', (session, reply) => { if (typeof reply === 'function' && !token) accept(rooms.resume(session), reply); });
   socket.on('player:select', (name, role, reply) => {
     if (typeof reply !== 'function') return;
-    const result = token ? rooms.select(token, name, role) : { ok: false as const, error: 'Join a garden first.' };
+    const result = token ? rooms.select(token, name, role) : { ok: false as const, error: 'Join a game first.' };
     if (result.ok && token) { const room = rooms.state(token); if (room) io.to(room.code).emit('room:state', room); }
     reply(result);
   });
   socket.on('player:ready', (ready, reply) => {
     if (typeof reply !== 'function') return;
-    const result = token ? rooms.ready(token, ready) : { ok: false as const, error: 'Join a garden first.' };
+    const result = token ? rooms.ready(token, ready) : { ok: false as const, error: 'Join a game first.' };
     if (result.ok && token) { const room = rooms.state(token); if (room) io.to(room.code).emit('room:state', room); }
     reply(result);
   });
   socket.on('mission:action', (action, reply) => {
     if (typeof reply !== 'function') return;
-    const result = token ? rooms.act(token, action) : { ok: false as const, error: 'Join a garden first.' };
+    const result = token ? rooms.act(token, action) : { ok: false as const, error: 'Join a game first.' };
     if (result.ok && token) { const room = rooms.state(token); if (room) io.to(room.code).emit('room:state', room); }
     reply(result);
   });
   socket.on('mission:replay', (round,ready,reply)=>{
     if(typeof reply!=='function')return;
-    const result=token?rooms.replay(token,round,ready):{ok:false as const,error:'Join a garden first.'};
+    const result=token?rooms.replay(token,round,ready):{ok:false as const,error:'Join a game first.'};
     if(result.ok&&token){const room=rooms.state(token);if(room)io.to(room.code).emit('room:state',room);}
     reply(result);
   });
   socket.on('hug:send', reply => {
     if (typeof reply !== 'function') return;
-    const result = token ? rooms.hug(token) : {ok:false as const,error:'Join a garden first.'};
+    const result = token ? rooms.hug(token) : {ok:false as const,error:'Join a game first.'};
     if (result.ok && token) { const room=rooms.state(token); if(room) socket.to(room.code).emit('hug:received'); }
     reply(result);
   });

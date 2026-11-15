@@ -16,7 +16,7 @@ export function applyMissionAction(state: MissionState, role: Role, action: Miss
   if(action.round!==state.round)return fail('That tap belongs to an earlier adventure.');
   if (state.complete) return fail('This adventure is complete!');
   if (action.type === 'discover') {
-    if (role !== 'explorer') return fail('The explorer can greet the bunny.');
+    if (role !== 'explorer') return fail('The eater can greet the critter.');
     state.discovered = true; return { ok: true };
   }
   if (action.type === 'grow') {
@@ -29,7 +29,7 @@ export function applyMissionAction(state: MissionState, role: Role, action: Miss
     return { ok: true };
   }
   if (action.type === 'feed') {
-    if (role !== 'explorer') return fail('The feeder takes care of the animal.');
+    if (role !== 'explorer') return fail('The eater takes care of the animal.');
     const index = state.basket.indexOf(action.carrot);
     if (index < 0) return fail('That item has already been used or has not arrived.');
     state.basket.splice(index, 1); state.fed.push(action.carrot);
