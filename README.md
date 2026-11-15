@@ -13,7 +13,7 @@ npm run dev
 
 Open http://localhost:5173. Create a garden in one tab, then open the invitation link in a **second tab** and join with the code. Each tab keeps its own reconnect token in sessionStorage. Reloading a connected tab resumes its existing player. Some browsers copy sessionStorage into duplicated tabs: use a fresh tab rather than Duplicate Tab to test the second player.
 
-Each child selects Raelyn or Cooper, chooses Explorer or Helper, and taps “I’m ready!” Names and roles are exclusive within a room, and either child can play either role. The server starts the adventure team only when both players are connected and ready. Once both players are ready, each enters their role’s mission screen. Rooms reserve both slots even after disconnect; create a new room for a fresh session. State is saved to a server-side SQLite database and restored after restarts. Sessions have no expiration or cleanup yet; this is a local development foundation, not a public production service.
+Each child chooses Grower or Eater and taps “I’m ready!” Jobs are exclusive within a room, and either child can play either job. The server starts the adventure team only when both players are connected and ready. Once both players are ready, each enters their role’s mission screen. Rooms reserve both slots even after disconnect; create a new room for a fresh session. State is saved to a server-side SQLite database and restored after restarts. Sessions have no expiration or cleanup yet; this is a local development foundation, not a public production service.
 
 For two phones on your local Wi-Fi, visit your computer’s LAN IP at port 5173. Vite proxies Socket.IO to port 3001, so no client URL override is necessary. Clipboard sharing requires a secure context on most phones; the visible room code also works. Allow local firewall access if required.
 
@@ -51,7 +51,7 @@ No child information, public discovery, chat, purchases, or analytics are includ
 ## Phase 2 acceptance check
 
 1. Create a room in a fresh tab and join from a second fresh tab.
-2. Choose Raelyn / Explorer in one and Cooper / Helper in the other, confirming each selection. Try selecting an occupied name or role; it should be unavailable.
+2. Choose Eater / Explorer in one and Grower / Helper in the other, confirming each selection. Try selecting an occupied name or role; it should be unavailable.
 3. Tap “I’m ready!” on one device. It waits for the other. Tap ready on the other; both enter their role’s mission screen.
 4. Reload either tab: its name, role, and team state return automatically.
 5. Before starting a new team, disconnect one device: the other shows “Reconnecting…”. The disconnected player must confirm ready again after reconnecting. After the team starts, disconnects retain that started state.

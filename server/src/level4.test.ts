@@ -4,7 +4,7 @@ import {RoomManager} from './rooms.js';
 import type {GameStore,SavedGame} from './store.js';
 function enterJungle(store?:GameStore){
  const manager=new RoomManager(store),a=manager.create();assert.ok(a.ok);const b=manager.join(a.room.code);assert.ok(b.ok);
- manager.select(a.token,'Raelyn','explorer');manager.select(b.token,'Cooper','helper');manager.ready(a.token,true);manager.ready(b.token,true);
+ manager.select(a.token,'Eater','explorer');manager.select(b.token,'Grower','helper');manager.ready(a.token,true);manager.ready(b.token,true);
  for(let level=1;level<=3;level++)for(let patch=0;patch<level;patch++){
   for(let stage=1;stage<3;stage++)assert.ok(manager.act(b.token,{round:level,id:`g${level}-${patch}-${stage}`,type:'grow',patch,stage}).ok);
   assert.ok(manager.act(a.token,{round:level,id:`f${level}-${patch}`,type:'feed',carrot:level*(level-1)/2+patch}).ok);

@@ -1,7 +1,9 @@
 import Phaser from 'phaser';
+import { preloadInsects,addAmbientInsects } from './ambientInsects';
 export type Environment='meadow'|'garden'|'jungle'|'mountain'|'moonlit'|'woodland'|'pine'|'ridge';
 export function preloadEnvironment(scene:Phaser.Scene,kind:Environment){
-  scene.load.image(`${kind}-v1`,kind==='ridge'?'/assets/backgrounds/ridge-v1.png':kind==='pine'?'/assets/backgrounds/pine-v1.png':kind==='woodland'?'/assets/backgrounds/woodland-v1.png':kind==='moonlit'?'/assets/backgrounds/moonlit-v1.png':kind==='mountain'?'/assets/backgrounds/mountain-v1.png':kind==='jungle'?'/assets/backgrounds/jungle-v1.png':kind==='garden'?'/assets/backgrounds/garden-v3.png':'/assets/backgrounds/meadow-v2.png');
+  scene.load.image(`${kind}-v1`,kind==='ridge'?'/assets/backgrounds/ridge-v2.png':kind==='pine'?'/assets/backgrounds/pine-v1.png':kind==='woodland'?'/assets/backgrounds/woodland-v1.png':kind==='moonlit'?'/assets/backgrounds/moonlit-v1.png':kind==='mountain'?'/assets/backgrounds/mountain-v1.png':kind==='jungle'?'/assets/backgrounds/jungle-v1.png':kind==='garden'?'/assets/backgrounds/garden-v3.png':'/assets/backgrounds/meadow-v2.png');
+  preloadInsects(scene,kind);
   scene.load.image('cloud-v1','/assets/effects/cloud-v1.png');
 }
 /** Cover the whole viewport independently of the centered gameplay coordinates. */
@@ -57,5 +59,6 @@ export function addEnvironment(scene:Phaser.Scene,kind:Environment,worldHeight:n
     scene.scale.off('resize',cover);scene.events.off('update',drift);
     clouds.forEach(cloud=>cloud.image.clearMask());mask.destroy();maskArt.destroy();
   });
+  addAmbientInsects(scene,kind,worldHeight);
   return background;
 }

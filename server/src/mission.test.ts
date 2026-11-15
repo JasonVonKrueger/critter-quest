@@ -34,7 +34,7 @@ test('room gates mission actions and reconnect restores progress',()=>{
  const manager=new RoomManager();const a=manager.create();assert.ok(a.ok);
  assert.equal(manager.act(a.token,{round:1,id:'a',type:'discover'}).ok,false);
  const b=manager.join(a.room.code);assert.ok(b.ok);
- manager.select(a.token,'Raelyn','explorer');manager.select(b.token,'Cooper','helper');manager.ready(a.token,true);manager.ready(b.token,true);
+ manager.select(a.token,'Eater','explorer');manager.select(b.token,'Grower','helper');manager.ready(a.token,true);manager.ready(b.token,true);
  assert.equal(manager.state(b.token)?.mission.patches[0],1);
  manager.disconnect(b.token);assert.equal(manager.act(b.token,{round:1,id:'g2',type:'grow',patch:0,stage:1}).ok,false);
  const resumed=manager.resume(b.token);assert.ok(resumed.ok);assert.equal(resumed.room.mission.patches[0],1);

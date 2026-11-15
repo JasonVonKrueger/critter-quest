@@ -95,7 +95,7 @@ export class RoomManager {
     const { room, player } = this.locate(token);
     if (!room || !player || !player.connected) return { ok: false, error: 'Reconnect to your game first.' };
     if (room.phase === 'started') return { ok: false, error: 'The adventure has already started.' };
-    if (!['Raelyn', 'Cooper'].includes(name) || !['explorer', 'helper'].includes(role)) return { ok: false, error: 'Choose a name and role.' };
+    if (!['Eater', 'Grower'].includes(name) || !['explorer', 'helper'].includes(role)) return { ok: false, error: 'Choose Grower or Eater.' };
     if (room.players.some(p => p.id !== player.id && p.name === name)) return { ok: false, error: 'Your friend has already picked that name.' };
     if (room.players.some(p => p.id !== player.id && p.name && p.role === role)) return { ok: false, error: 'Your friend has already picked that role.' };
     if (player.name !== name || player.role !== role) player.ready = false;
@@ -108,7 +108,7 @@ export class RoomManager {
     if (!room || !player || !player.connected) return { ok: false, error: 'Reconnect to your game first.' };
     if (typeof ready !== 'boolean') return { ok: false, error: 'Invalid ready state.' };
     if (room.phase === 'started') return { ok: true };
-    if (!player.name) return { ok: false, error: 'Choose your name and role first.' };
+    if (!player.name) return { ok: false, error: 'Choose your job first.' };
     player.ready = ready;
     if (room.players.length === 2 && room.players.every(p => p.connected && p.ready && p.name) && room.players[0].role !== room.players[1].role) {room.phase = 'started';room.mission.hungryAt=nextHungerAt();}
     return { ok: true };

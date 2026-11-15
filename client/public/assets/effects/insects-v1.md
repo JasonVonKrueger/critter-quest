@@ -1,0 +1,13 @@
+# Ambient insects
+
+Generated with built-in imagegen. Each sheet uses a 2 × 2 grid of four transparent animation frames, named `frame-1` through `frame-4` in reading order.
+
+Three ants walk along the ground in daytime habitats. Five fireflies drift in moonlit and pine habitats. These decorations have no input handlers and freeze when reduced motion is requested.
+
+## Ant prompt
+
+Use case: stylized-concept. Production animation sprite sheet for a small walking ant in a lush painted children's woodland game. EXACT 2x2 equal square grid, FOUR sequential frames read left-right top-bottom, transparent background. Each cell contains ONE same friendly anatomically recognizable warm dark chestnut-brown ant, six slender articulated legs, three body segments, curved antennae, tiny bright eyes, side view facing RIGHT. All four bodies identical size and orientation, same center and horizontal ground baseline; only legs and antennae move in four distinct stages of an alternating-tripod WALK CYCLE, seamless loop. Feet touch imaginary ground, no actual ground. Polished storybook hand-painted volume, smooth soft highlights, natural insect proportions, not humanoid. Each ant horizontal body and legs occupy middle 65% width and middle 50% height of its cell, ample fully transparent padding, no clipped appendages. Entire square canvas ideally 1024x1024. No extra insects, no props, no cast shadows, no labels, no grid lines, no text, no watermark, no background color. Actual alpha transparency.
+
+## Firefly prompt
+
+Use case: stylized-concept. Production sprite sheet of a tiny flying firefly for a painted children's woodland game at night. EXACT 2x2 equal square grid FOUR consecutive animation frames read left-right top-bottom, genuinely transparent background including soft alpha glow. ONE same firefly in each cell, three-quarter side view facing RIGHT, small dark warm brown beetle body, delicate translucent wings, six tiny legs, fine antennae, luminous yellow-green abdomen with a small soft golden-green halo. Friendly natural insect, no human face. Same body position, scale, orientation and center in all four cells. Four distinct wingbeat poses: wings raised, halfway down, lowered, halfway up; abdomen glow cycles dim, medium, bright, medium, looping seamlessly. Polished dimensional storybook painted rendering to match a lush forest game. Insect including wings occupies central 45% of each square cell, glow stays inside central 75%, ample empty transparent margins on all sides. Square 1024x1024 ideally. No stars, scenery, ground, props, extra insects, labels, grid lines, text or watermark. No opaque background; actual alpha transparency.

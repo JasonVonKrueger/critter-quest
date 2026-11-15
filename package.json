@@ -11,7 +11,7 @@
     "build": "npm run build -w shared && npm run build -w server && npm run build -w client",
     "typecheck": "tsc --noEmit -p server/tsconfig.json && tsc --noEmit -p client/tsconfig.json",
     "lint": "eslint .",
-    "test": "node --import tsx --test server/src/*.test.ts",
+    "test": "node --import tsx --test server/src/*.test.ts client/src/*.test.ts",
     "check:pwa": "npm run build && node scripts/check-pwa.mjs"
   },
   "devDependencies": {

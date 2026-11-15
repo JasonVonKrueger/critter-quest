@@ -5,7 +5,7 @@ import type {GameStore,SavedGame} from './store.js';
 function team(store?:GameStore){
  const manager=new RoomManager(store),a=manager.create();assert.ok(a.ok);
  const b=manager.join(a.room.code);assert.ok(b.ok);
- manager.select(a.token,'Raelyn','explorer');manager.select(b.token,'Cooper','helper');manager.ready(a.token,true);manager.ready(b.token,true);
+ manager.select(a.token,'Eater','explorer');manager.select(b.token,'Grower','helper');manager.ready(a.token,true);manager.ready(b.token,true);
  return {manager,a,b};
 }
 function finish(manager:RoomManager,a:string,b:string,round:number){
@@ -28,7 +28,7 @@ test('replay requires both connected votes and preserves sanctuary rewards acros
  assert.ok(manager.replay(a.token,21,false).ok);assert.equal(manager.state(a.token)?.replayReady.length,0);
  manager.replay(a.token,21,true);manager.replay(b.token,21,true);
  const state=manager.state(a.token)!;assert.equal(state.mission.round,22);assert.deepEqual(state.mission.patches,[1]);
- assert.deepEqual(state.sanctuary,{stars:21,unlockedAnimals:['bunny','snake','hawk','owl','bobcat','wolf','bear']});assert.equal(state.players[0].name,'Raelyn');
+ assert.deepEqual(state.sanctuary,{stars:21,unlockedAnimals:['bunny','snake','hawk','owl','bobcat','wolf','bear']});assert.equal(state.players[0].name,'Eater');
  assert.equal(manager.replay(a.token,21,true).ok,false);
  assert.equal(manager.act(b.token,{round:1,id:'old',type:'grow',patch:0,stage:0}).ok,false);
  assert.equal(manager.act(a.token,{round:1,id:'old-feed',type:'feed',carrot:0}).ok,false);
@@ -66,7 +66,7 @@ test('start over resets an unfinished mission only after both players agree',()=
  const state=manager.state(a.token)!;
  assert.equal(state.mission.round,2);assert.deepEqual(state.mission.patches,[1]);
  assert.deepEqual(state.mission.basket,[]);assert.deepEqual(state.mission.fed,[]);assert.equal(state.mission.discovered,false);
- assert.equal(state.players[0].name,'Raelyn');assert.equal(state.players[1].role,'helper');
+ assert.equal(state.players[0].name,'Eater');assert.equal(state.players[1].role,'helper');
  assert.deepEqual(state.sanctuary,{stars:0,unlockedAnimals:[]});
  assert.equal(manager.act(b.token,{round:1,id:'late',type:'grow',patch:0,stage:0}).ok,false);
 });

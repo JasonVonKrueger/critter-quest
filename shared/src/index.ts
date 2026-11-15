@@ -1,5 +1,5 @@
 export type Role = 'explorer' | 'helper';
-export type PlayerName = 'Raelyn' | 'Cooper';
+export type PlayerName = 'Eater' | 'Grower';
 export interface Player { id: string; role: Role; name?: PlayerName; ready: boolean; connected: boolean }
 export interface SanctuaryState { stars:number; unlockedAnimals:string[] }
 export interface RoomState { sanctuary:SanctuaryState; replayReady:string[]; code: string; players: Player[]; mission: MissionState; phase: 'waiting' | 'ready' | 'started' }

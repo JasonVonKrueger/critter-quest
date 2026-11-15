@@ -6,7 +6,9 @@ import { createBobcat,preloadBobcat,setBobcatPose,setBobcatGaze,setBobcatHungry 
 import { createOwl,preloadOwl,setOwlPose,setOwlGaze,setOwlHungry } from './owl';
 import { createHawk,preloadHawk,setHawkPose,setHawkGaze,setHawkHungry } from './hawk';
 import { levelOffset } from './levels';
+import { sceneEnvironment } from './sceneEnvironment';
 import { hatchOwl } from './owlHatch';
+import { createTimerScope } from './timerScope';
 import { createSnake,preloadSnake,setSnakePose,setSnakeGaze } from './snake';
 import { observeSceneSize } from './resizeScene';
 import { addEnvironment, preloadEnvironment } from './environment';
@@ -22,6 +24,7 @@ export default function MissionWorld({state,role,tap,hug,feed,water,hungry=false
   const owl=state.level>=10&&state.level<=12;
   const hawk=state.level>=7&&state.level<=9;
   const snake=state.level>=4&&state.level<=6;
+  const habitat=sceneEnvironment(state.level,role);
   const advanced=snake||hawk||owl||bobcat||wolf||bear;
   const itemTexture=bear?'wolf-items-v1':wolf?'bobcat-items-v1':bobcat?'owl-items-v1':owl?'hawk-items-v1':hawk?'snake-items-v1':'rabbits-v1';
   useEffect(()=>{
@@ -29,21 +32,25 @@ export default function MissionWorld({state,role,tap,hug,feed,water,hungry=false
     const pose=bear?setBearPose:wolf?setWolfPose:bobcat?setBobcatPose:owl?setOwlPose:hawk?setHawkPose:snake?setSnakePose:setBunnyPose;
     const lookAt=bear?setBearGaze:wolf?setWolfGaze:bobcat?setBobcatGaze:owl?setOwlGaze:hawk?setHawkGaze:snake?setSnakeGaze:setBunnyGaze;
     class Garden extends Phaser.Scene {
-      preload(){if(bear)preloadBear(this);else if(wolf)preloadWolf(this);else if(bobcat)preloadBobcat(this);else if(owl)preloadOwl(this);else if(hawk)preloadHawk(this);else if(snake)preloadSnake(this);else if(role==='explorer')preloadBunny(this);preloadEnvironment(this,bear?'ridge':wolf?'pine':bobcat?'woodland':owl?'moonlit':hawk?'mountain':snake?'jungle':role==='helper'?'garden':'meadow');if(role==='helper')this.load.image('watering-can','/assets/objects/watering-can-v1.png');}
+      preload(){if(bear)preloadBear(this);else if(wolf)preloadWolf(this);else if(bobcat)preloadBobcat(this);else if(owl)preloadOwl(this);else if(hawk)preloadHawk(this);else if(snake)preloadSnake(this);else if(role==='explorer')preloadBunny(this);preloadEnvironment(this,habitat);if(role==='helper')this.load.image('watering-can','/assets/objects/watering-can-v1.png');}
       create(){
         const fit=()=>{this.cameras.main.setZoom(Math.min(this.scale.width/500,this.scale.height/450)).centerOn(250,225);};
         fit();this.scale.on('resize',fit);this.events.once('shutdown',()=>this.scale.off('resize',fit));
         this.cameras.main.setBackgroundColor(role==='helper'?'#bde6d9':'#cceac9');
         const patchX=(id:number,count=latest.current.state.patches.length)=>250+(id-(count-1)/2)*150;
         const carrotX=(id:number)=>{const level=latest.current.state.level;return patchX(id-levelOffset(level));};
-        const environment=addEnvironment(this,bear?'ridge':wolf?'pine':bobcat?'woodland':owl?'moonlit':hawk?'mountain':snake?'jungle':role==='helper'?'garden':'meadow',450);
+        addEnvironment(this,habitat,450);
         let retryWaterWhileDragging:(()=>void)|undefined;
-        if(role==='helper'&&environment){
+        let resetWater:(()=>void)|undefined;
+        let waterPatch:((patch:number)=>void)|undefined;
+        if(role==='helper'){
+          const pourTimers=createTimerScope((ms,callback)=>this.time.delayedCall(ms,callback));
           const can=this.add.image(60,160,'watering-can').setDisplaySize(120,80).setDepth(20).setInteractive({useHandCursor:true});
           this.input.setDraggable(can);
           const home=new Phaser.Math.Vector2();
           const placeCan=()=>{
-            home.set(Math.max(55,environment.x-environment.displayWidth*.41),environment.y-environment.displayHeight*.12);
+            // Gameplay controls stay inside the visible play area, regardless of background cropping.
+            home.set(70,160);
             can.setPosition(home.x,home.y).setAngle(0);
           };
           const returnHome=()=>this.tweens.add({targets:can,x:home.x,y:home.y,angle:0,duration:250});
@@ -51,6 +58,11 @@ export default function MissionWorld({state,role,tap,hug,feed,water,hungry=false
           let pouring=false;
           let requested=false;
           let dragging=false;
+          resetWater=()=>{
+            pourTimers.clear();this.tweens.killTweensOf(can);
+            pouring=false;requested=false;dragging=false;placeCan();
+          };
+          this.events.once('shutdown',()=>pourTimers.clear());
           const pourWater=(patch:number)=>{
             const round=latest.current.state.round;
             pouring=true;
@@ -61,13 +73,17 @@ export default function MissionWorld({state,role,tap,hug,feed,water,hungry=false
               const spoutY=can.y+Math.sin(angle)*44+Math.cos(angle)*-8;
               latest.current.onPour?.();
               for(let i=0;i<14;i++){
-                this.time.delayedCall(i*40,()=>{
+                pourTimers.schedule(i*40,()=>{
                   const drop=this.add.ellipse(spoutX,spoutY,7,13,0x39baff).setDepth(21);
                   this.tweens.add({targets:drop,x:patchX(patch)+Phaser.Math.Between(-22,22),y:305,alpha:0.2,duration:420,ease:'Quad.in',onComplete:()=>drop.destroy()});
                 });
               }
-              this.time.delayedCall(1000,()=>{if(latest.current.state.round===round)latest.current.water?.(patch);pouring=false;returnHome();});
+              pourTimers.schedule(1000,()=>{if(latest.current.state.round===round)latest.current.water?.(patch);pouring=false;requested=false;returnHome();});
             }});
+          };
+          waterPatch=(patch:number)=>{
+            if(pouring||latest.current.state.complete||latest.current.state.patches[patch]!==1)return;
+            requested=true;pourWater(patch);
           };
           const tryWater=()=>{
             if(requested||pouring)return;
@@ -86,7 +102,6 @@ export default function MissionWorld({state,role,tap,hug,feed,water,hungry=false
             dragging=false;
             tryWater();
             if(!pouring&&!requested)returnHome();
-            else if(requested)this.time.delayedCall(1500,()=>{if(!pouring)returnHome();});
           });
         }
         const bunny=role==='explorer'?(bear?createBear(this,250,220):wolf?createWolf(this,250,220):bobcat?createBobcat(this,250,220):owl?createOwl(this,250,220):hawk?createHawk(this,250,220):snake?createSnake(this,250,220):createBunny(this,250,220)):this.add.container(250,220);
@@ -94,7 +109,11 @@ export default function MissionWorld({state,role,tap,hug,feed,water,hungry=false
         const patches=role==='helper'?[0,1,2].map(i=>{
           const soil=this.add.ellipse(patchX(i),310,130,65,0x9a6d43);
           soil.setData('patch',i);
-          return (advanced?this.add.image(patchX(i),285,itemTexture,'burrow').setDisplaySize(130,130):this.add.text(patchX(i),285,'🌱',{fontSize:'64px'}).setOrigin(.5)).setInteractive({useHandCursor:true}).on('pointerdown',()=>latest.current.tap(i));
+          return (advanced?this.add.image(patchX(i),285,itemTexture,'burrow').setDisplaySize(130,130):this.add.text(patchX(i),285,'🌱',{fontSize:'64px'}).setOrigin(.5)).setInteractive({useHandCursor:true}).on('pointerdown',()=>{
+            if(hatching.has(patches[i] as Phaser.GameObjects.Image))return;
+            if(latest.current.state.patches[i]===1)waterPatch?.(i);
+            else latest.current.tap(i);
+          });
         }):[];
         const landedCarrots=role==='explorer'?Array.from({length:42},(_,i)=>i).map(id=>{
           const carrot=(advanced?this.add.image(carrotX(id),350,itemTexture,'item').setDisplaySize(90,90):this.add.text(carrotX(id),350,'🥕',{fontSize:'44px'}).setOrigin(.5).setPadding(16)).setVisible(false);
@@ -114,12 +133,13 @@ export default function MissionWorld({state,role,tap,hug,feed,water,hungry=false
           landedCarrots.forEach((carrot,id)=>carrot.setX(carrotX(id)).setVisible(displayedState.basket.includes(id)&&!arriving.has(id)));
         };
         const update=(next:MissionState)=>{
-          if(next.round!==displayedState.round)arriving.clear();
+          if(next.round!==displayedState.round){arriving.clear();resetWater?.();}
           displayedState=next;
           if(bear)setBearHungry(bunny,latest.current.hungry);else if(wolf)setWolfHungry(bunny,latest.current.hungry);else if(bobcat)setBobcatHungry(bunny,latest.current.hungry);else if(owl)setOwlHungry(bunny,latest.current.hungry);else if(hawk)setHawkHungry(bunny,latest.current.hungry);else setBunnyHungry(bunny,latest.current.hungry);
           retryWaterWhileDragging?.();
           patches.forEach((p,i)=>{
-            p.setPosition(patchX(i),285).setVisible(i<next.patches.length);
+            p.setPosition(patchX(i),285).setVisible(i<next.patches.length).setAlpha(next.patches[i]===3?.35:1);
+            if(next.patches[i]===3)p.disableInteractive();else if(p.input)p.input.enabled=true;
             if(p instanceof Phaser.GameObjects.Image){
               const stage=next.patches[i];
               if(hatching.has(p)&&(stage!==2||next.round!==previous.round)){
@@ -141,6 +161,7 @@ export default function MissionWorld({state,role,tap,hug,feed,water,hungry=false
               const food=advanced?this.add.image(foodX,350,itemTexture,'item').setDisplaySize(80,80):this.add.text(foodX,350,'🥕',{fontSize:'40px'}).setOrigin(.5);
               this.tweens.add({targets:food,x:250,y:230,alpha:0,duration:400,onComplete:()=>food.destroy()});
             }
+            this.tweens.killTweensOf(bunny);bunny.setScale(1);
             pose(bunny,'eat',1200);this.tweens.add({targets:bunny,scale:1.12,duration:220,yoyo:true,repeat:1});}
           const sent=next.patches.flatMap((stage,id)=>stage===3&&previous.patches[id]!==3?[levelOffset(next.level)+id]:[]);
           for(const id of sent){
@@ -187,7 +208,7 @@ export default function MissionWorld({state,role,tap,hug,feed,water,hungry=false
     game.current=new Phaser.Game({type:Phaser.AUTO,parent:host.current,width:500,height:450,scene:Garden,scale:{mode:Phaser.Scale.RESIZE,autoCenter:Phaser.Scale.CENTER_BOTH},audio:{noAudio:true}});
     const stopResize=observeSceneSize(host.current,game.current);
     return()=>{stopResize();game.current?.destroy(true);game.current=null;};
-  },[role,snake,hawk,owl,bobcat,wolf,bear]);
+  },[role,snake,hawk,owl,bobcat,wolf,bear,habitat]);
   useEffect(()=>{game.current?.events.emit('mission-state',state);},[state,hungry]);
   useEffect(()=>{if(hug)game.current?.events.emit('hug');},[hug]);
   return <div className="mission-world" ref={host} aria-label={role==='helper'?`Level ${state.level} growing patches`:bear?'Bear’s sunrise ridge':wolf?'Wolf’s pine forest':bobcat?'Bobcat’s woodland':owl?'Owl’s moonlit hollow':hawk?'Hawk’s highland':snake?'Snake’s riverbank':'Bunny’s meadow'}/>;
