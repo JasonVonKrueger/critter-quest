@@ -1,0 +1,9 @@
+# Bear character art
+
+Generated with the built-in imagegen tool using the owl, wolf, and hawk atlases as style references. Scaled to the existing 1260 × 1260 atlas with nine 420 × 420 frames. Frame names and game integration are unchanged.
+
+## Generation prompt
+
+Use case: stylized-concept. Create a production game sprite atlas replacing the bear placeholder. References: image 1 bear is layout/pose reference only, do NOT imitate its flat art; images 2 owl, 3 wolf, 4 hawk are rendering quality/style references. Draw the same adorable grizzly bear cub consistently in ALL NINE cells, rich soft individually painted brown fur, lighter honey tan muzzle, round ears, chunky paws with small subtle claws, large expressive amber-brown eyes, polished storybook 3D-like painted volume matching the wolf/owl/hawk. Full body seated cub, friendly and recognizably a bear, no clothes or props. EXACT square 3 by 3 evenly spaced grid, each character centered in its equal square cell, uniform scale and foot baseline, generous transparent margins so no fur or paws touches cell edges. Pose order left to right: row 1 neutral forward idle; eyes closed blink; happy open mouth smile. Row 2 eating chewing with closed eyes and puffed cheeks no food; eyes/head looking toward viewer's LEFT; eyes/head looking DOWN. Row 3 eyes/head looking toward viewer's RIGHT; celebrating with both front paws raised and joyful smile; sad pleading eyes and small downturned mouth. Neutral/blink/happy/eat/gaze/sad keep identical seated body posture. Transparent background throughout, no background, no cast ground shadows, no grid lines, no lettering, no labels, no watermark. Output square atlas ideally 1260x1260.
+
+The placeholder generator in `scripts/make-bear-placeholders.py` predates this final art; running it will overwrite this sheet.

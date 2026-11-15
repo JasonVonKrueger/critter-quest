@@ -1,8 +1,9 @@
 import type { GameStore, SavedGame } from './store.js';
 import { createMission, applyMissionAction, nextHungerAt, animals } from './mission.js';
 import type { MissionAction } from '@critter-quest/shared';
-import { randomBytes, randomUUID } from 'node:crypto';
+import { randomBytes, randomInt, randomUUID } from 'node:crypto';
 import type { RoomState, RoomResult, PlayerName, Role, ActionResult } from '@critter-quest/shared';
+const CODE_LETTERS = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
 export class RoomManager {
   private hugs = new Map<string, number>();
   private rooms = new Map<string, RoomState>();
@@ -60,7 +61,7 @@ export class RoomManager {
   }
   private createRoom(): RoomResult {
     let code: string;
-    do { code = randomBytes(3).toString('hex').toUpperCase(); } while (this.rooms.has(code));
+    do { code = Array.from({ length: 4 }, () => CODE_LETTERS[randomInt(CODE_LETTERS.length)]).join(''); } while (this.rooms.has(code));
     this.rooms.set(code, { code, players: [], phase: 'waiting', mission: createMission(), sanctuary:{stars:0,unlockedAnimals:[]}, replayReady:[] });
     return this.joinRoom(code);
   }

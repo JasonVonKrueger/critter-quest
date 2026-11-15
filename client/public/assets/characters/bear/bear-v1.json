@@ -1,0 +1,192 @@
+{
+  "frames": {
+    "idle": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 420,
+        "h": 420
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 420,
+        "h": 420
+      },
+      "sourceSize": {
+        "w": 420,
+        "h": 420
+      }
+    },
+    "blink": {
+      "frame": {
+        "x": 420,
+        "y": 0,
+        "w": 420,
+        "h": 420
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 420,
+        "h": 420
+      },
+      "sourceSize": {
+        "w": 420,
+        "h": 420
+      }
+    },
+    "happy": {
+      "frame": {
+        "x": 840,
+        "y": 0,
+        "w": 420,
+        "h": 420
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 420,
+        "h": 420
+      },
+      "sourceSize": {
+        "w": 420,
+        "h": 420
+      }
+    },
+    "eat": {
+      "frame": {
+        "x": 0,
+        "y": 420,
+        "w": 420,
+        "h": 420
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 420,
+        "h": 420
+      },
+      "sourceSize": {
+        "w": 420,
+        "h": 420
+      }
+    },
+    "left": {
+      "frame": {
+        "x": 420,
+        "y": 420,
+        "w": 420,
+        "h": 420
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 420,
+        "h": 420
+      },
+      "sourceSize": {
+        "w": 420,
+        "h": 420
+      }
+    },
+    "down": {
+      "frame": {
+        "x": 840,
+        "y": 420,
+        "w": 420,
+        "h": 420
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 420,
+        "h": 420
+      },
+      "sourceSize": {
+        "w": 420,
+        "h": 420
+      }
+    },
+    "right": {
+      "frame": {
+        "x": 0,
+        "y": 840,
+        "w": 420,
+        "h": 420
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 420,
+        "h": 420
+      },
+      "sourceSize": {
+        "w": 420,
+        "h": 420
+      }
+    },
+    "celebrate": {
+      "frame": {
+        "x": 420,
+        "y": 840,
+        "w": 420,
+        "h": 420
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 420,
+        "h": 420
+      },
+      "sourceSize": {
+        "w": 420,
+        "h": 420
+      }
+    },
+    "sad": {
+      "frame": {
+        "x": 840,
+        "y": 840,
+        "w": 420,
+        "h": 420
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 420,
+        "h": 420
+      },
+      "sourceSize": {
+        "w": 420,
+        "h": 420
+      }
+    }
+  },
+  "meta": {
+    "image": "bear-v1.png",
+    "size": {
+      "w": 1260,
+      "h": 1260
+    },
+    "scale": "1"
+  }
+}

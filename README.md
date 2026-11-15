@@ -226,3 +226,9 @@ Completing level 15 saves the bobcat and three more stars (15 total, 30 meals ac
 The next chapter moves to a twilight pine forest with a friendly gray wolf. Jobs swap at level 16. Grow magical bobcats in burrows, send them, then tap them after landing to feed the wolf. Levels 16, 17, and 18 require one, two, and three meals. The wolf blinks, tracks landed bobcats, and has hungry, happy, and gentle feeding poses.
 
 Finishing level 18 saves the wolf and three more stars (18 total, 36 meals across the adventure). Completed bobcat saves resume at level 16 with the fifth job swap applied once. Start over restores the original jobs and level 1. Artwork paths and exact built-in imagegen prompts are in `client/public/assets/characters/wolf/README.md`.
+
+## Levels 19–21: Bear’s Sunrise Ridge
+
+The next chapter climbs to a sunrise ridge above the pine forest, home to a young grizzly bear. Jobs swap again at level 19. Grow wolf pups in dens, send them, then tap them after they land to feed the bear. Levels 19, 20, and 21 need one, two, and three meals. The bear blinks, watches landed wolves, and has hungry, happy, gentle feeding, and rear-up celebrate poses. Feeding stays non-graphic.
+
+Finishing level 21 saves the bear and three more stars (21 total, 42 meals across the adventure). Completed wolf saves resume at level 19 with the sixth job swap applied once. Start over restores the original jobs and level 1. The bear, wolf-den, and ridge artwork are placeholders from `scripts/make-bear-placeholders.py`; see `client/public/assets/characters/bear/README.md`.
